@@ -407,6 +407,7 @@ func InitHeimdallConfigWith(homeDir string, heimdallConfigFileFromFLag string) {
 		newHexToStringAlgoHeight = 12048023
 		aalborgHeight = 18035772
 	case PuppynetChain:
+		fmt.Println("Puppynet Vinayak")
 		newSelectionAlgoHeight = 0
 		spanOverrideHeight = 0
 		newHexToStringAlgoHeight = 0
