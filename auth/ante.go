@@ -283,7 +283,8 @@ func DeductFees(feeCollector FeeCollector, ctx sdk.Context, acc authTypes.Accoun
 	blockTime := ctx.BlockHeader().Time
 	fmt.Println("Vinayak DeductFee", blockTime, "284")
 	coins := acc.GetCoins()
-	fmt.Println("Vinayak DeductFee", coins, "286")
+	fmt.Println("Vinayak DeductFee", coins, coins[0].Amount, coins[0].Denom, "286")
+	fmt.Println("Vinayak DeductFee", fees, coins[0].Amount, coins[0].Denom, "286")
 	if !fees.IsValid() {
 		fmt.Println("Vinayak DeductFee", "288")
 		return sdk.ErrInsufficientFee(fmt.Sprintf("invalid fee amount: %s", fees)).Result()
