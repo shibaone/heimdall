@@ -409,12 +409,12 @@ func InitHeimdallConfigWith(homeDir string, heimdallConfigFileFromFLag string) {
 	case PuppynetChain:
 		newSelectionAlgoHeight = 0
 		spanOverrideHeight = 0
-		newHexToStringAlgoHeight = 6483063
+		newHexToStringAlgoHeight = 0
 		aalborgHeight = 6483063
 	case ShibariumChain:
 		newSelectionAlgoHeight = 0
 		spanOverrideHeight = 0
-		newHexToStringAlgoHeight = 9302994
+		newHexToStringAlgoHeight = 0
 		aalborgHeight = 9302994
 	default:
 		newSelectionAlgoHeight = 0
