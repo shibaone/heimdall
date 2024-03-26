@@ -71,6 +71,7 @@ func NewAnteHandler(
 ) sdk.AnteHandler {
 	return func(ctx sdk.Context, tx sdk.Tx, simulate bool) (newCtx sdk.Context, res sdk.Result, abort bool) {
 		// get module address
+		fmt.Println("Vinayak Ante", "74")
 		if addr := feeCollector.GetModuleAddress(authTypes.FeeCollectorName); addr.Empty() {
 			return newCtx, sdk.ErrInternal(fmt.Sprintf("%s module account has not been set", authTypes.FeeCollectorName)).Result(), true
 		}
@@ -89,7 +90,7 @@ func NewAnteHandler(
 			newCtx = SetGasMeter(simulate, ctx, 0)
 			return newCtx, sdk.ErrTxDecode("error decoding transaction").Result(), true
 		}
-
+		fmt.Println("Vinayak Ante", "93")
 		// get account params
 		params := ak.GetParams(ctx)
 
@@ -105,7 +106,7 @@ func NewAnteHandler(
 
 		// new gas meter
 		newCtx = SetGasMeter(simulate, ctx, gasForTx)
-
+		fmt.Println("Vinayak Ante", "109")
 		// AnteHandlers must have their own defer/recover in order for the BaseApp
 		// to know how much gas was used! This is because the GasMeter is created in
 		// the AnteHandler, but if it panics the context won't be set properly in
@@ -128,7 +129,7 @@ func NewAnteHandler(
 				}
 			}
 		}()
-
+		fmt.Println("Vinayak Ante", "132")
 		// validate tx
 		if err := tx.ValidateBasic(); err != nil {
 			return newCtx, err.Result(), true
@@ -145,7 +146,7 @@ func NewAnteHandler(
 		if len(signerAddrs) == 0 {
 			return newCtx, sdk.ErrNoSignatures("no signers").Result(), true
 		}
-
+		fmt.Println("Vinayak Ante", "149")
 		if len(signerAddrs) > 1 {
 			return newCtx, sdk.ErrUnauthorized("wrong number of signers").Result(), true
 		}
@@ -168,7 +169,7 @@ func NewAnteHandler(
 			// reload the account as fees have been deducted
 			signerAcc = ak.GetAccount(newCtx, signerAcc.GetAddress())
 		}
-
+		fmt.Println("Vinayak Ante", "172")
 		// stdSigs contains the sequence number, account number, and signatures.
 		// When simulating, this would just be a 0-length slice.
 		stdSigs := stdTx.GetSignatures()
@@ -182,7 +183,7 @@ func NewAnteHandler(
 		}
 
 		ak.SetAccount(newCtx, signerAcc)
-
+		fmt.Println("Vinayak Ante", "186")
 		// TODO: tx tags (?)
 		return newCtx, sdk.Result{GasWanted: gasForTx}, false // continue...
 	}
@@ -231,7 +232,7 @@ func processSig(
 	if res := sigGasConsumer(ctx.GasMeter(), sig, params); !res.IsOK() {
 		return nil, res
 	}
-
+	fmt.Println("Vinayak ProcessSig", "235")
 	if !simulate {
 		var pk secp256k1.PubKeySecp256k1
 
@@ -241,7 +242,7 @@ func processSig(
 		}
 
 		copy(pk[:], p[:])
-
+		fmt.Println("Vinayak ProcessSig", "245")
 		if !bytes.Equal(acc.GetAddress().Bytes(), pk.Address().Bytes()) {
 			return nil, sdk.ErrUnauthorized("signature verification failed; verify correct account sequence and chain-id").Result()
 		}
@@ -253,11 +254,11 @@ func processSig(
 			}
 		}
 	}
-
+	fmt.Println("Vinayak ProcessSig", "257")
 	if err := acc.SetSequence(acc.GetSequence() + 1); err != nil {
 		return nil, sdk.ErrUnauthorized("error while updating account sequence").Result()
 	}
-
+	fmt.Println("Vinayak ProcessSig", "261")
 	return acc, res
 }
 
@@ -325,7 +326,7 @@ func GetSignBytes(ctx sdk.Context, chainID string, stdTx authTypes.StdTx, acc au
 	if !genesis {
 		accNum = acc.GetAccountNumber()
 	}
-
+	fmt.Println("Vinayak GetSignBytes", "329")
 	signBytes := authTypes.StdSignBytes(chainID, accNum, acc.GetSequence(), stdTx.Msg, stdTx.Memo)
 
 	if ctx.BlockHeight() > helper.GetNewHexToStringAlgoHeight() {
@@ -335,10 +336,10 @@ func GetSignBytes(ctx sdk.Context, chainID string, stdTx authTypes.StdTx, acc au
 	const newData = ",\"data\":\"0x\","
 
 	const oldData = ",\"data\":\"0x0\","
-
+	fmt.Println("Vinayak GetSignBytes", "339")
 	if bytes.Contains(signBytes, []byte(newData)) {
 		signBytes = bytes.Replace(signBytes, []byte(newData), []byte(oldData), 1)
 	}
-
+	fmt.Println("Vinayak GetSignBytes", "343")
 	return signBytes
 }
