@@ -281,33 +281,39 @@ func DefaultSigVerificationGasConsumer(
 // the CoinKeeper doesn't give us accounts), but it seems easier to do this.
 func DeductFees(feeCollector FeeCollector, ctx sdk.Context, acc authTypes.Account, fees sdk.Coins) sdk.Result {
 	blockTime := ctx.BlockHeader().Time
+	fmt.Println("Vinayak DeductFee", blockTime, "284")
 	coins := acc.GetCoins()
-
+	fmt.Println("Vinayak DeductFee", coins, "286")
 	if !fees.IsValid() {
+		fmt.Println("Vinayak DeductFee", "288")
 		return sdk.ErrInsufficientFee(fmt.Sprintf("invalid fee amount: %s", fees)).Result()
 	}
-
+	fmt.Println("Vinayak DeductFee", "291")
 	// verify the account has enough funds to pay for fees
 	_, hasNeg := coins.SafeSub(fees)
 	if hasNeg {
+		fmt.Println("Vinayak DeductFee", "295")
 		return sdk.ErrInsufficientFunds(
 			fmt.Sprintf("insufficient funds to pay for fees; %s < %s", coins, fees),
 		).Result()
 	}
-
+	fmt.Println("Vinayak DeductFee", "291")
 	// Validate the account has enough "spendable" coins
 	spendableCoins := acc.SpendableCoins(blockTime)
+	fmt.Println("Vinayak DeductFee", spendableCoins, "303")
 	if _, hasNeg := spendableCoins.SafeSub(fees); hasNeg {
+		fmt.Println("Vinayak DeductFee", "305")
 		return sdk.ErrInsufficientFunds(
 			fmt.Sprintf("insufficient funds to pay for fees; %s < %s", spendableCoins, fees),
 		).Result()
 	}
-
+	fmt.Println("Vinayak DeductFee", "310")
 	err := feeCollector.SendCoinsFromAccountToModule(ctx, acc.GetAddress(), authTypes.FeeCollectorName, fees)
 	if err != nil {
+		fmt.Println("Vinayak DeductFee", "313")
 		return err.Result()
 	}
-
+	fmt.Println("Vinayak DeductFee", "316")
 	return sdk.Result{}
 }
 

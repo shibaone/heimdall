@@ -151,13 +151,13 @@ require (
 	gopkg.in/yaml.v3 v3.0.1
 )
 
-replace github.com/tendermint/tendermint => github.com/maticnetwork/tendermint v0.26.0-dev0.0.20231005133805-2bb6a831bb2e
+replace github.com/tendermint/tendermint => github.com/maticnetwork/tendermint v0.26.0-dev0.0.20220923185258-3e7c7f86ce9f
 
 replace github.com/tendermint/tm-db => github.com/tendermint/tm-db v0.2.0
 
-replace github.com/cosmos/cosmos-sdk => github.com/maticnetwork/cosmos-sdk v0.37.5-0.20231005133937-b1eb1f90feb7
+replace github.com/cosmos/cosmos-sdk => github.com/maticnetwork/cosmos-sdk v0.37.5-0.20220311095845-81690c6a53e7
 
-replace github.com/ethereum/go-ethereum => github.com/maticnetwork/bor v1.0.4
+replace github.com/ethereum/go-ethereum => github.com/maticnetwork/bor v0.2.18-0.20220922050621-c91d4ca1fa4f
 
 replace go.mongodb.org/mongo-driver => go.mongodb.org/mongo-driver v1.5.1
 
