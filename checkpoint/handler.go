@@ -2,7 +2,6 @@ package checkpoint
 
 import (
 	"bytes"
-	"fmt"
 	"math"
 	"strconv"
 	"time"
@@ -247,7 +246,6 @@ func handleMsgCheckpointNoAck(ctx sdk.Context, msg types.MsgCheckpointNoAck, k K
 
 	// Get current block time
 	currentTime := ctx.BlockTime()
-	fmt.Println("Vinayak 250")
 
 	// Get buffer time from params
 	bufferTime := k.GetParams(ctx).CheckpointBufferTime
@@ -265,7 +263,6 @@ func handleMsgCheckpointNoAck(ctx sdk.Context, msg types.MsgCheckpointNoAck, k K
 
 		return common.ErrInvalidNoACK(k.Codespace()).Result()
 	}
-	fmt.Println("Vinayak 268")
 	//Hardfork to check the validaty of the NoAckProposer
 	if ctx.BlockHeight() >= helper.GetAalborgHardForkHeight() {
 		timeDiff := currentTime.Sub(lastCheckpointTime)
@@ -303,7 +300,6 @@ func handleMsgCheckpointNoAck(ctx sdk.Context, msg types.MsgCheckpointNoAck, k K
 
 		return common.ErrTooManyNoACK(k.Codespace()).Result()
 	}
-	fmt.Println("Vinayak 306")
 	// Set new last no-ack
 	newLastNoAck := uint64(currentTime.Unix())
 	k.SetLastNoAck(ctx, newLastNoAck)
@@ -334,8 +330,6 @@ func handleMsgCheckpointNoAck(ctx sdk.Context, msg types.MsgCheckpointNoAck, k K
 			sdk.NewAttribute(types.AttributeKeyNewProposer, newProposer.Signer.String()),
 		),
 	})
-
-	fmt.Println("Vinayak 338")
 
 	return sdk.Result{
 		Events: ctx.EventManager().Events(),

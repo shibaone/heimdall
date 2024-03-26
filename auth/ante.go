@@ -71,7 +71,6 @@ func NewAnteHandler(
 ) sdk.AnteHandler {
 	return func(ctx sdk.Context, tx sdk.Tx, simulate bool) (newCtx sdk.Context, res sdk.Result, abort bool) {
 		// get module address
-		fmt.Println("Vinayak Ante", "74")
 		if addr := feeCollector.GetModuleAddress(authTypes.FeeCollectorName); addr.Empty() {
 			return newCtx, sdk.ErrInternal(fmt.Sprintf("%s module account has not been set", authTypes.FeeCollectorName)).Result(), true
 		}
@@ -90,7 +89,6 @@ func NewAnteHandler(
 			newCtx = SetGasMeter(simulate, ctx, 0)
 			return newCtx, sdk.ErrTxDecode("error decoding transaction").Result(), true
 		}
-		fmt.Println("Vinayak Ante", "93")
 		// get account params
 		params := ak.GetParams(ctx)
 
@@ -106,7 +104,6 @@ func NewAnteHandler(
 
 		// new gas meter
 		newCtx = SetGasMeter(simulate, ctx, gasForTx)
-		fmt.Println("Vinayak Ante", "109")
 		// AnteHandlers must have their own defer/recover in order for the BaseApp
 		// to know how much gas was used! This is because the GasMeter is created in
 		// the AnteHandler, but if it panics the context won't be set properly in
@@ -129,7 +126,6 @@ func NewAnteHandler(
 				}
 			}
 		}()
-		fmt.Println("Vinayak Ante", "132")
 		// validate tx
 		if err := tx.ValidateBasic(); err != nil {
 			return newCtx, err.Result(), true
@@ -146,32 +142,25 @@ func NewAnteHandler(
 		if len(signerAddrs) == 0 {
 			return newCtx, sdk.ErrNoSignatures("no signers").Result(), true
 		}
-		fmt.Println("Vinayak Ante", "149")
 		if len(signerAddrs) > 1 {
-			fmt.Println("Vinayak Ante", "151")
 			return newCtx, sdk.ErrUnauthorized("wrong number of signers").Result(), true
 		}
 
 		isGenesis := ctx.BlockHeight() == 0
-		fmt.Println("Vinayak Ante", "155")
 		// fetch first signer, who's going to pay the fees
 		signerAcc, res := GetSignerAcc(newCtx, ak, types.AccAddressToHeimdallAddress(signerAddrs[0]))
 		if !res.IsOK() {
-			fmt.Println("Vinayak Ante", "160")
 			return newCtx, res, true
 		}
-		fmt.Println("Vinayak Ante", "161")
 		// deduct the fees
 		if !feeForTx.IsZero() {
 			res = DeductFees(feeCollector, newCtx, signerAcc, feeForTx)
 			if !res.IsOK() {
 				return newCtx, res, true
 			}
-			fmt.Println("Vinayak Ante", "168")
 			// reload the account as fees have been deducted
 			signerAcc = ak.GetAccount(newCtx, signerAcc.GetAddress())
 		}
-		fmt.Println("Vinayak Ante", "172")
 		// stdSigs contains the sequence number, account number, and signatures.
 		// When simulating, this would just be a 0-length slice.
 		stdSigs := stdTx.GetSignatures()
@@ -185,7 +174,6 @@ func NewAnteHandler(
 		}
 
 		ak.SetAccount(newCtx, signerAcc)
-		fmt.Println("Vinayak Ante", "186")
 		// TODO: tx tags (?)
 		return newCtx, sdk.Result{GasWanted: gasForTx}, false // continue...
 	}
@@ -199,10 +187,8 @@ func GetSignerAcc(
 	addr types.HeimdallAddress,
 ) (authTypes.Account, sdk.Result) {
 	if acc := ak.GetAccount(ctx, addr); acc != nil {
-		fmt.Println("Vinayak Ante", acc)
 		return acc, sdk.Result{}
 	}
-	fmt.Println("Vinayak Ante", "202")
 	return nil, sdk.ErrUnknownAddress(fmt.Sprintf("account %s does not exist", addr)).Result()
 }
 
@@ -235,7 +221,6 @@ func processSig(
 	if res := sigGasConsumer(ctx.GasMeter(), sig, params); !res.IsOK() {
 		return nil, res
 	}
-	fmt.Println("Vinayak ProcessSig", "235")
 	if !simulate {
 		var pk secp256k1.PubKeySecp256k1
 
@@ -245,7 +230,6 @@ func processSig(
 		}
 
 		copy(pk[:], p[:])
-		fmt.Println("Vinayak ProcessSig", "245")
 		if !bytes.Equal(acc.GetAddress().Bytes(), pk.Address().Bytes()) {
 			return nil, sdk.ErrUnauthorized("signature verification failed; verify correct account sequence and chain-id").Result()
 		}
@@ -257,11 +241,9 @@ func processSig(
 			}
 		}
 	}
-	fmt.Println("Vinayak ProcessSig", "257")
 	if err := acc.SetSequence(acc.GetSequence() + 1); err != nil {
 		return nil, sdk.ErrUnauthorized("error while updating account sequence").Result()
 	}
-	fmt.Println("Vinayak ProcessSig", "261")
 	return acc, res
 }
 
@@ -281,40 +263,28 @@ func DefaultSigVerificationGasConsumer(
 // the CoinKeeper doesn't give us accounts), but it seems easier to do this.
 func DeductFees(feeCollector FeeCollector, ctx sdk.Context, acc authTypes.Account, fees sdk.Coins) sdk.Result {
 	blockTime := ctx.BlockHeader().Time
-	fmt.Println("Vinayak DeductFee", blockTime, "284")
 	coins := acc.GetCoins()
-	fmt.Println("Vinayak DeductFee", coins, coins[0].Amount, coins[0].Denom, "286")
-	fmt.Println("Vinayak DeductFee", fees, coins[0].Amount, coins[0].Denom, "286")
 	if !fees.IsValid() {
-		fmt.Println("Vinayak DeductFee", "288")
 		return sdk.ErrInsufficientFee(fmt.Sprintf("invalid fee amount: %s", fees)).Result()
 	}
-	fmt.Println("Vinayak DeductFee", "291")
 	// verify the account has enough funds to pay for fees
 	_, hasNeg := coins.SafeSub(fees)
 	if hasNeg {
-		fmt.Println("Vinayak DeductFee", "295")
 		return sdk.ErrInsufficientFunds(
 			fmt.Sprintf("insufficient funds to pay for fees; %s < %s", coins, fees),
 		).Result()
 	}
-	fmt.Println("Vinayak DeductFee", "291")
 	// Validate the account has enough "spendable" coins
 	spendableCoins := acc.SpendableCoins(blockTime)
-	fmt.Println("Vinayak DeductFee", spendableCoins, "303")
 	if _, hasNeg := spendableCoins.SafeSub(fees); hasNeg {
-		fmt.Println("Vinayak DeductFee", "305")
 		return sdk.ErrInsufficientFunds(
 			fmt.Sprintf("insufficient funds to pay for fees; %s < %s", spendableCoins, fees),
 		).Result()
 	}
-	fmt.Println("Vinayak DeductFee", "310")
 	err := feeCollector.SendCoinsFromAccountToModule(ctx, acc.GetAddress(), authTypes.FeeCollectorName, fees)
 	if err != nil {
-		fmt.Println("Vinayak DeductFee", "313")
 		return err.Result()
 	}
-	fmt.Println("Vinayak DeductFee", "316")
 	return sdk.Result{}
 }
 
@@ -336,7 +306,6 @@ func GetSignBytes(ctx sdk.Context, chainID string, stdTx authTypes.StdTx, acc au
 	if !genesis {
 		accNum = acc.GetAccountNumber()
 	}
-	fmt.Println("Vinayak GetSignBytes", "329")
 	signBytes := authTypes.StdSignBytes(chainID, accNum, acc.GetSequence(), stdTx.Msg, stdTx.Memo)
 
 	if ctx.BlockHeight() > helper.GetNewHexToStringAlgoHeight() {
@@ -346,10 +315,8 @@ func GetSignBytes(ctx sdk.Context, chainID string, stdTx authTypes.StdTx, acc au
 	const newData = ",\"data\":\"0x\","
 
 	const oldData = ",\"data\":\"0x0\","
-	fmt.Println("Vinayak GetSignBytes", "339")
 	if bytes.Contains(signBytes, []byte(newData)) {
 		signBytes = bytes.Replace(signBytes, []byte(newData), []byte(oldData), 1)
 	}
-	fmt.Println("Vinayak GetSignBytes", "343")
 	return signBytes
 }
