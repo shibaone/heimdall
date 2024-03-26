@@ -148,24 +148,26 @@ func NewAnteHandler(
 		}
 		fmt.Println("Vinayak Ante", "149")
 		if len(signerAddrs) > 1 {
+			fmt.Println("Vinayak Ante", "151")
 			return newCtx, sdk.ErrUnauthorized("wrong number of signers").Result(), true
 		}
 
 		isGenesis := ctx.BlockHeight() == 0
-
+		fmt.Println("Vinayak Ante", "155")
 		// fetch first signer, who's going to pay the fees
 		signerAcc, res := GetSignerAcc(newCtx, ak, types.AccAddressToHeimdallAddress(signerAddrs[0]))
 		if !res.IsOK() {
+			fmt.Println("Vinayak Ante", "160")
 			return newCtx, res, true
 		}
-
+		fmt.Println("Vinayak Ante", "161")
 		// deduct the fees
 		if !feeForTx.IsZero() {
 			res = DeductFees(feeCollector, newCtx, signerAcc, feeForTx)
 			if !res.IsOK() {
 				return newCtx, res, true
 			}
-
+			fmt.Println("Vinayak Ante", "168")
 			// reload the account as fees have been deducted
 			signerAcc = ak.GetAccount(newCtx, signerAcc.GetAddress())
 		}
@@ -197,9 +199,10 @@ func GetSignerAcc(
 	addr types.HeimdallAddress,
 ) (authTypes.Account, sdk.Result) {
 	if acc := ak.GetAccount(ctx, addr); acc != nil {
+		fmt.Println("Vinayak Ante", acc)
 		return acc, sdk.Result{}
 	}
-
+	fmt.Println("Vinayak Ante", "202")
 	return nil, sdk.ErrUnknownAddress(fmt.Sprintf("account %s does not exist", addr)).Result()
 }
 
