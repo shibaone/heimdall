@@ -7,7 +7,7 @@ Standards-Version: v1.0.2
 Homepage: https://polygon.technology
 Rules-Requires-Root: no
 Package: heimdalld-profile
-Version: 1.0.2
+Version: 1.0.2-bone-beta-1
 Architecture: arm64
 Multi-Arch: foreign
 Depends: rabbitmq-server
