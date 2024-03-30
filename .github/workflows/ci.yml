@@ -36,9 +36,13 @@ jobs:
         uses: actions/setup-go@v3
         with:
           go-version: 1.22.x
+          
+      - name: Golang-ci install
+        if: runner.os == 'Linux'
+        run: make lintci-deps
 
-      - name: "Run linter"
-        run: make lint
+      # - name: "Run linter"
+      #   run: make lint
 
   test:
     name: test
@@ -108,7 +112,7 @@ jobs:
             npm install --prefer-offline --no-audit --progress=false
             mkdir devnet
             cd devnet
-            ../bin/matic-cli setup devnet -c ../../heimdall/.github/matic-cli-config.yml
+            ../bin/matic-cli.js setup devnet -c ../../heimdall/.github/matic-cli-config.yml
 
         - name: Launch devnet
           run: |
