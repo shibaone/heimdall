@@ -48,13 +48,16 @@ jobs:
       if: startsWith(github.ref, 'refs/tags/v')
       id: login-ecr
       uses: aws-actions/amazon-ecr-login@v2
+      with:
+        registry-type: public
 
     - name: Push image to Amazon ECR
       if: startsWith(github.ref , 'refs/tags/v')
       env:
         ECR_REGISTRY: "${{ steps.login-ecr.outputs.registry }}"
+        REGISTRY_ALIAS: public.ecr.aws/b8n7w3s4
         ECR_REPOSITORY: heimdall
         IMAGE_TAG: "${{  github.ref_name }}"
       run: |
-        docker build -f Dockerfile.deprecated -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
-        docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+        docker build -f Dockerfile.deprecated -t $ECR_REGISTRY/$REGISTRY_ALIAS/$ECR_REPOSITORY:$IMAGE_TAG .
+        docker push $ECR_REGISTRY/$REGISTRY_ALIAS/$ECR_REPOSITORY:$IMAGE_TAG
