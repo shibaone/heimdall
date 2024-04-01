@@ -2,10 +2,12 @@ name: Docker Image CI
 
 on:
   push:
-    tags:
-      - 'v*.*.*'
+    branches:
+        - "*"
+    # tags:
+      # - 'v*.*.*'
       # to be used by fork patch-releases ^^
-      - 'v*.*.*-*'
+      # - 'v*.*.*-*'
       
 env:
   SHIBARIUM_REGION: us-east-1
