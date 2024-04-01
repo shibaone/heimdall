@@ -196,6 +196,12 @@ nfpms:
       - src: builder/files/genesis-testnet-v4.json
         dst: /etc/heimdall/genesis-testnet-v4.json
         type: config
+      - src: builder/files/genesis-shibarium.json
+        dst: /etc/heimdall/genesis-shibarium.json
+        type: config
+      - src: builder/files/genesis-puppynet.json
+        dst: /etc/heimdall/genesis-puppynet.json
+        type: config
       - dst: /var/lib/heimdall
         type: dir
         file_info:
