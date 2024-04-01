@@ -6,6 +6,11 @@ on:
       - 'v*.*.*'
       - 'v*.*.*-*'
 
+permissions:
+  contents: write
+  packages: write
+  pull-requests: write
+
 jobs:
   build:
     runs-on: ubuntu-20.04
@@ -385,8 +390,9 @@ jobs:
 
       - name: Confirming package built
         run: ls -ltr packaging/deb/ | grep heimdall
+        
       - name: Release heimdalld.deb
-        uses: softprops/action-gh-release@v1
+        uses: softprops/action-gh-release@v2
         with:
           tag_name: ${{ env.GIT_TAG }}
           prerelease: true
