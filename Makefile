@@ -63,6 +63,9 @@ ifndef LINT_COMMAND
 endif
 	golangci-lint run --config ./.golangci.yml
 
+lintci-deps:
+	curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b v1.53.3
+
 #
 # docker commands
 #

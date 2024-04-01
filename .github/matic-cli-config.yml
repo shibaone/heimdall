@@ -19,7 +19,7 @@ numOfErigonArchiveNodes: 0
 ethURL: http://ganache:9545
 ethHostUser: ubuntu
 devnetType: docker
-borDockerBuildContext: "https://github.com/maticnetwork/bor.git#develop"
+borDockerBuildContext: "https://github.com/shibaone/bor.git#develop"
 heimdallDockerBuildContext: "../../heimdall"
 sprintSizeBlockNumber:
   - '0'

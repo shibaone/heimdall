@@ -1,5 +1,5 @@
 Source: heimdalld-profile
-Version: 1.0.2
+Version: 1.0.2-bone-beta-1
 Section: develop
 Priority: standard
 Maintainer: Polygon <release-team@polygon.technology>
@@ -9,4 +9,4 @@ Package: heimdalld-profile
 Architecture: arm64
 Multi-Arch: foreign
 Depends:
-Description: This is the heimdalld package from Polygon Technology.
+Description: This is the heimdalld package from Shibarium.

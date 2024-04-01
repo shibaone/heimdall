@@ -40,9 +40,11 @@ const (
 	LogsWriterFileFlag     = "logs_writer_file"
 	SeedsFlag              = "seeds"
 
-	MainChain   = "mainnet"
-	MumbaiChain = "mumbai"
-	LocalChain  = "local"
+	MainChain      = "mainnet"
+	MumbaiChain    = "mumbai"
+	PuppynetChain  = "puppynet"
+	ShibariumChain = "shibarium"
+	LocalChain     = "local"
 
 	// heimdall-config flags
 	MainRPCUrlFlag               = "eth_rpc_url"
@@ -242,9 +244,11 @@ type ChainManagerAddressMigration struct {
 }
 
 var chainManagerAddressMigrations = map[string]map[int64]ChainManagerAddressMigration{
-	MainChain:   {},
-	MumbaiChain: {},
-	"default":   {},
+	MainChain:      {},
+	MumbaiChain:    {},
+	PuppynetChain:  {},
+	ShibariumChain: {},
+	"default":      {},
 }
 
 // Contracts
@@ -402,6 +406,16 @@ func InitHeimdallConfigWith(homeDir string, heimdallConfigFileFromFLag string) {
 		spanOverrideHeight = 10205000
 		newHexToStringAlgoHeight = 12048023
 		aalborgHeight = 18035772
+	case PuppynetChain:
+		newSelectionAlgoHeight = 0
+		spanOverrideHeight = 0
+		newHexToStringAlgoHeight = 0
+		aalborgHeight = 0
+	case ShibariumChain:
+		newSelectionAlgoHeight = 0
+		spanOverrideHeight = 0
+		newHexToStringAlgoHeight = 0
+		aalborgHeight = 0
 	default:
 		newSelectionAlgoHeight = 0
 		spanOverrideHeight = 0
