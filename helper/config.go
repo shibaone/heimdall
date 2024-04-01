@@ -410,12 +410,12 @@ func InitHeimdallConfigWith(homeDir string, heimdallConfigFileFromFLag string) {
 		newSelectionAlgoHeight = 0
 		spanOverrideHeight = 0
 		newHexToStringAlgoHeight = 0
-		aalborgHeight = 0
+		aalborgHeight = 9679929
 	case ShibariumChain:
 		newSelectionAlgoHeight = 0
 		spanOverrideHeight = 0
 		newHexToStringAlgoHeight = 0
-		aalborgHeight = 0
+		aalborgHeight = 13478575
 	default:
 		newSelectionAlgoHeight = 0
 		spanOverrideHeight = 0
