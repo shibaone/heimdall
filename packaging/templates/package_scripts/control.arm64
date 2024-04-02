@@ -2,7 +2,7 @@ Source: heimdalld
 Version: 1.0.2-bone-beta-1
 Section: develop
 Priority: standard
-Maintainer: Polygon <release-team@polygon.technology>
+Maintainer: Shibarium <team@shibariumtech.com>
 Build-Depends: debhelper-compat (= 13)
 Rules-Requires-Root: yes
 Package: heimdalld
