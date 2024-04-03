@@ -135,11 +135,11 @@ const (
 	MaxStateSyncSize = 30000
 
 	//Milestone Length
-	MilestoneLength = uint64(12)
+	MilestoneLength = uint64(6)
 
 	MilestonePruneNumber = uint64(100)
 
-	MaticChainMilestoneConfirmation = uint64(16)
+	MaticChainMilestoneConfirmation = uint64(8)
 
 	//Milestone buffer Length
 	MilestoneBufferLength = MilestoneLength * 5
@@ -410,7 +410,7 @@ func InitHeimdallConfigWith(homeDir string, heimdallConfigFileFromFLag string) {
 		newSelectionAlgoHeight = 0
 		spanOverrideHeight = 0
 		newHexToStringAlgoHeight = 0
-		aalborgHeight = 9679929
+		aalborgHeight = 1716800
 	case ShibariumChain:
 		newSelectionAlgoHeight = 0
 		spanOverrideHeight = 0
