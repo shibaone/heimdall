@@ -8,7 +8,6 @@ import (
 	"github.com/stretchr/testify/suite"
 	abci "github.com/tendermint/tendermint/abci/types"
 
-	cmTypes "github.com/maticnetwork/heimdall/chainmanager/types"
 	chSim "github.com/maticnetwork/heimdall/checkpoint/simulation"
 	"github.com/maticnetwork/heimdall/checkpoint/types"
 	"github.com/maticnetwork/heimdall/common"
@@ -46,7 +45,7 @@ func (suite *SideHandlerTestSuite) TestSideHandleMsgMilestone() {
 			milestone.MilestoneID,
 		)
 
-		suite.contractCaller.On("CheckIfBlocksExist", milestone.EndBlock+cmTypes.DefaultMaticchainMilestoneTxConfirmations).Return(true)
+		suite.contractCaller.On("CheckIfBlocksExist", milestone.EndBlock+helper.MaticChainMilestoneConfirmation).Return(true)
 		suite.contractCaller.On("GetVoteOnHash", milestone.StartBlock, milestone.EndBlock, milestoneLength, milestone.Hash.String(), milestone.MilestoneID).Return(true, nil)
 
 		result := suite.sideHandler(ctx, msgMilestone)
@@ -70,7 +69,7 @@ func (suite *SideHandlerTestSuite) TestSideHandleMsgMilestone() {
 			milestone.MilestoneID,
 		)
 
-		suite.contractCaller.On("CheckIfBlocksExist", milestone.EndBlock+cmTypes.DefaultMaticchainMilestoneTxConfirmations).Return(true)
+		suite.contractCaller.On("CheckIfBlocksExist", milestone.EndBlock+helper.MaticChainMilestoneConfirmation).Return(true)
 		suite.contractCaller.On("GetVoteOnHash", milestone.StartBlock, milestone.EndBlock, milestoneLength, milestone.Hash.String(), milestone.MilestoneID).Return(false, nil)
 
 		result := suite.sideHandler(ctx, msgMilestone)
@@ -96,7 +95,7 @@ func (suite *SideHandlerTestSuite) TestSideHandleMsgMilestone() {
 			milestone.MilestoneID,
 		)
 
-		suite.contractCaller.On("CheckIfBlocksExist", milestone.EndBlock+cmTypes.DefaultMaticchainMilestoneTxConfirmations).Return(true)
+		suite.contractCaller.On("CheckIfBlocksExist", milestone.EndBlock+helper.MaticChainMilestoneConfirmation).Return(true)
 		suite.contractCaller.On("GetVoteOnHash", milestone.StartBlock, milestone.EndBlock, milestoneLength, milestone.Hash.String(), milestone.MilestoneID).Return(true, nil)
 
 		result := suite.sideHandler(ctx, msgMilestone)
@@ -122,7 +121,7 @@ func (suite *SideHandlerTestSuite) TestSideHandleMsgMilestone() {
 			milestone.MilestoneID,
 		)
 
-		suite.contractCaller.On("CheckIfBlocksExist", milestone.EndBlock+cmTypes.DefaultMaticchainMilestoneTxConfirmations).Return(true)
+		suite.contractCaller.On("CheckIfBlocksExist", milestone.EndBlock+helper.MaticChainMilestoneConfirmation).Return(true)
 		suite.contractCaller.On("GetVoteOnHash", milestone.StartBlock, milestone.EndBlock, milestoneLength, milestone.Hash.String(), milestone.MilestoneID).Return(true, nil)
 
 		result := suite.sideHandler(ctx, msgMilestone)
