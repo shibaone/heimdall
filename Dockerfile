@@ -1,4 +1,4 @@
-FROM golang:latest
+FROM golang:1.22
 
 ARG HEIMDALL_DIR=/var/lib/heimdall
 ENV HEIMDALL_DIR=$HEIMDALL_DIR
