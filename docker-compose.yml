@@ -1,7 +1,7 @@
 # This is an example compose file for starting up Heimdall required components
 # to run standalone without Bor for development and testing purposes.
 # Do not use this for production.
-version: "3"
+version: "3.8"
 
 services:
   rabbitmq:
