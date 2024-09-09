@@ -82,7 +82,7 @@ jobs:
           ARCH: amd64
           NODE: sentry
           NETWORK: puppynet
-      - name: Copying profile control file for ${{ env.NODE }} on ${{ env.NETWORK }} on ${{ env.ARCH }}
+      - name: Copying profile control file for for ${{ env.NODE }} on ${{ env.NETWORK }} on ${{ env.ARCH }}
         run: cp -rp packaging/templates/package_scripts/control.profile.amd64 packaging/deb/heimdalld-${{ env.NETWORK }}-${{ env.NODE }}-config_${{ env.GIT_TAG }}-${{ env.ARCH }}/DEBIAN/control
         env:
           ARCH: amd64
@@ -94,14 +94,14 @@ jobs:
           ARCH: amd64
           NODE: sentry
           NETWORK: puppynet
-
-      - name: Setting up heimdalld for ${{ env.NODE }} on ${{ env.NETWORK }} on ${{ env.ARCH }}
+          
+      - name: Setting up heimdalld for for ${{ env.NODE }} on ${{ env.NETWORK }} on ${{ env.ARCH }}
         run: cp -rp packaging/deb/heimdalld packaging/deb/heimdalld-${{ env.NETWORK }}-${{ env.NODE }}-config_${{ env.GIT_TAG }}-${{ env.ARCH }}
         env:
           ARCH: amd64
           NODE: sentry
           NETWORK: shibarium
-      - name: Copying over the postinst file for ${{ env.NODE }} on ${{ env.NETWORK }} on ${{ env.ARCH }}
+      - name: Copying over the postinst file for for ${{ env.NODE }} on ${{ env.NETWORK }} on ${{ env.ARCH }}
         run: cp -rp packaging/templates/package_scripts/postinst.profile.mainnet packaging/deb/heimdalld-${{ env.NETWORK }}-${{ env.NODE }}-config_${{ env.GIT_TAG }}-${{ env.ARCH }}/DEBIAN/postinst
         env:
           ARCH: amd64
