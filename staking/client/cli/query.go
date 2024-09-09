@@ -35,7 +35,7 @@ func GetQueryCmd(cdc *codec.Codec) *cobra.Command {
 			GetTotalStakingPower(cdc),
 			GetValidatorStatus(cdc),
 			GetProposer(cdc),
-			GetCurentProposer(cdc),
+			GetCurrentProposer(cdc),
 			IsOldTx(cdc),
 		)...,
 	)
@@ -159,7 +159,7 @@ func GetValidatorStatus(cdc *codec.Codec) *cobra.Command {
 
 			validatorAddressStr := viper.GetString(FlagValidatorAddress)
 			if validatorAddressStr == "" {
-				return fmt.Errorf("validator ID or validator address required")
+				return fmt.Errorf("validator address required")
 			}
 
 			queryParams, err := cliCtx.Codec.MarshalJSON(types.NewQuerySignerParams(common.FromHex(validatorAddressStr)))
@@ -244,7 +244,7 @@ func GetProposer(cdc *codec.Codec) *cobra.Command {
 }
 
 // Get Current proposer
-func GetCurentProposer(cdc *codec.Codec) *cobra.Command {
+func GetCurrentProposer(cdc *codec.Codec) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "current-proposer",
 		Short: "show the current proposer",

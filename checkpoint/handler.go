@@ -122,7 +122,7 @@ func handleMsgCheckpoint(ctx sdk.Context, msg types.MsgCheckpoint, k Keeper, _ h
 				"currentTip", lastCheckpoint.EndBlock,
 				"startBlock", msg.StartBlock)
 
-			return common.ErrDisCountinuousCheckpoint(k.Codespace()).Result()
+			return common.ErrDisContinuousCheckpoint(k.Codespace()).Result()
 		}
 	} else if err.Error() == common.ErrNoCheckpointFound(k.Codespace()).Error() && msg.StartBlock != 0 {
 		logger.Error("First checkpoint to start from block 0", "checkpoint start block", msg.StartBlock, "error", err)
@@ -221,7 +221,7 @@ func handleMsgCheckpointAck(ctx sdk.Context, msg types.MsgCheckpointAck, k Keepe
 			"endExpected", headerBlock.EndBlock,
 			"endReceived", msg.StartBlock,
 			"rootExpected", headerBlock.RootHash.String(),
-			"rootRecieved", msg.RootHash.String(),
+			"rootReceived", msg.RootHash.String(),
 		)
 
 		return common.ErrBadAck(k.Codespace()).Result()
@@ -263,7 +263,8 @@ func handleMsgCheckpointNoAck(ctx sdk.Context, msg types.MsgCheckpointNoAck, k K
 
 		return common.ErrInvalidNoACK(k.Codespace()).Result()
 	}
-	//Hardfork to check the validaty of the NoAckProposer
+
+	//Hardfork to check the validity of the NoAckProposer
 	if ctx.BlockHeight() >= helper.GetAalborgHardForkHeight() {
 		timeDiff := currentTime.Sub(lastCheckpointTime)
 

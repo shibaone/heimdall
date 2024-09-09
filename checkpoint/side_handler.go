@@ -305,7 +305,7 @@ func PostHandleMsgCheckpoint(ctx sdk.Context, k Keeper, msg types.MsgCheckpoint,
 				"currentTip", lastCheckpoint.EndBlock,
 				"startBlock", msg.StartBlock)
 
-			return common.ErrDisCountinuousCheckpoint(k.Codespace()).Result()
+			return common.ErrDisContinuousCheckpoint(k.Codespace()).Result()
 		}
 	} else if err.Error() == common.ErrNoCheckpointFound(k.Codespace()).Error() && msg.StartBlock != 0 {
 		logger.Error("First checkpoint to start from block 0", "Error", err)
@@ -404,7 +404,7 @@ func PostHandleMsgCheckpointAck(ctx sdk.Context, k Keeper, msg types.MsgCheckpoi
 			"endExpected", checkpointObj.EndBlock,
 			"endReceived", msg.StartBlock,
 			"rootExpected", checkpointObj.RootHash.String(),
-			"rootRecieved", msg.RootHash.String(),
+			"rootReceived", msg.RootHash.String(),
 		)
 
 		return common.ErrBadAck(k.Codespace()).Result()
