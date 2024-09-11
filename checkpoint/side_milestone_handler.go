@@ -44,6 +44,7 @@ func SideHandleMsgMilestone(ctx sdk.Context, k Keeper, msg types.MsgMilestone, c
 
 	//Validating the milestone
 	validMilestone, err := types.ValidateMilestone(msg.StartBlock, msg.EndBlock, msg.Hash, msg.MilestoneID, contractCaller, milestoneLength, helper.MaticChainMilestoneConfirmation)
+
 	if err != nil {
 		logger.Error("Error validating milestone",
 			"startBlock", msg.StartBlock,
