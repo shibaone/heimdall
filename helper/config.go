@@ -44,7 +44,7 @@ const (
 	MumbaiChain    = "mumbai"
 	PuppynetChain  = "puppynet"
 	ShibariumChain = "shibarium"
-  AmoyChain      = "amoy"
+	AmoyChain      = "amoy"
 	LocalChain     = "local"
 
 	// heimdall-config flags
@@ -251,8 +251,8 @@ var chainManagerAddressMigrations = map[string]map[int64]ChainManagerAddressMigr
 	MumbaiChain:    {},
 	PuppynetChain:  {},
 	ShibariumChain: {},
-  AmoyChain:      {},
-	"default":      {}
+	AmoyChain:      {},
+	"default":      {},
 }
 
 // Contracts
