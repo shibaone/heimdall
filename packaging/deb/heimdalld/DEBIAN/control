@@ -3,11 +3,11 @@ Section: develop
 Priority: Testing
 Maintainer: Shibarium <team@shibarium.technology>
 Build-Depends: debhelper-compat (= 13)
-Standards-Version: v1.0.2-bone
+Standards-Version: v1.0.7-bone-beta
 Homepage: https://www.shibariumtech.com/
 Rules-Requires-Root: no
 Package: heimdalld
-Version: 1.0.2-bone
+Version: 1.0.7-bone-beta
 Architecture: amd64
 Multi-Arch: foreign
 Depends:

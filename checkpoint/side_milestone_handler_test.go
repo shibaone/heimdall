@@ -120,7 +120,7 @@ func (suite *SideHandlerTestSuite) TestSideHandleMsgMilestone() {
 
 		msgMilestone.BorChainID = msgMilestone.MilestoneID
 
-		suite.contractCaller.On("CheckIfBlocksExist", milestone.EndBlock+cmTypes.DefaultMaticchainMilestoneTxConfirmations).Return(true)
+		suite.contractCaller.On("CheckIfBlocksExist", milestone.EndBlock+helper.MaticChainMilestoneConfirmation).Return(true)
 		suite.contractCaller.On("GetVoteOnHash", milestone.StartBlock, milestone.EndBlock, milestoneLength, milestone.Hash.String(), milestone.MilestoneID).Return(true, nil)
 
 		result := suite.sideHandler(ctx, msgMilestone)
@@ -145,7 +145,7 @@ func (suite *SideHandlerTestSuite) TestSideHandleMsgMilestone() {
 
 		msgMilestone.BorChainID = msgMilestone.MilestoneID
 
-		suite.contractCaller.On("CheckIfBlocksExist", milestone.EndBlock+cmTypes.DefaultMaticchainMilestoneTxConfirmations).Return(true)
+		suite.contractCaller.On("CheckIfBlocksExist", milestone.EndBlock+helper.MaticChainMilestoneConfirmation).Return(true)
 		suite.contractCaller.On("GetVoteOnHash", milestone.StartBlock, milestone.EndBlock, milestoneLength, milestone.Hash.String(), milestone.MilestoneID).Return(true, nil)
 
 		result := suite.sideHandler(ctx, msgMilestone)
