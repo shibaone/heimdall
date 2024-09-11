@@ -40,10 +40,12 @@ const (
 	LogsWriterFileFlag     = "logs_writer_file"
 	SeedsFlag              = "seeds"
 
-	MainChain   = "mainnet"
-	MumbaiChain = "mumbai"
-	AmoyChain   = "amoy"
-	LocalChain  = "local"
+	MainChain      = "mainnet"
+	MumbaiChain    = "mumbai"
+	PuppynetChain  = "puppynet"
+	ShibariumChain = "shibarium"
+	AmoyChain      = "amoy"
+	LocalChain     = "local"
 
 	// heimdall-config flags
 	MainRPCUrlFlag               = "eth_rpc_url"
@@ -136,11 +138,11 @@ const (
 	MaxStateSyncSize = 30000
 
 	//Milestone Length
-	MilestoneLength = uint64(12)
+	MilestoneLength = uint64(6)
 
 	MilestonePruneNumber = uint64(100)
 
-	MaticChainMilestoneConfirmation = uint64(16)
+	MaticChainMilestoneConfirmation = uint64(8)
 
 	//Milestone buffer Length
 	MilestoneBufferLength = MilestoneLength * 5
@@ -245,10 +247,12 @@ type ChainManagerAddressMigration struct {
 }
 
 var chainManagerAddressMigrations = map[string]map[int64]ChainManagerAddressMigration{
-	MainChain:   {},
-	MumbaiChain: {},
-	AmoyChain:   {},
-	"default":   {},
+	MainChain:      {},
+	MumbaiChain:    {},
+	PuppynetChain:  {},
+	ShibariumChain: {},
+	AmoyChain:      {},
+	"default":      {},
 }
 
 // Contracts
@@ -406,6 +410,16 @@ func InitHeimdallConfigWith(homeDir string, heimdallConfigFileFromFLag string) {
 		spanOverrideHeight = 10205000
 		newHexToStringAlgoHeight = 12048023
 		aalborgHeight = 18035772
+	case PuppynetChain:
+		newSelectionAlgoHeight = 0
+		spanOverrideHeight = 0
+		newHexToStringAlgoHeight = 0
+		aalborgHeight = 1725550
+	case ShibariumChain:
+		newSelectionAlgoHeight = 0
+		spanOverrideHeight = 0
+		newHexToStringAlgoHeight = 0
+		aalborgHeight = 3941864
 	case AmoyChain:
 		newSelectionAlgoHeight = 0
 		spanOverrideHeight = 0

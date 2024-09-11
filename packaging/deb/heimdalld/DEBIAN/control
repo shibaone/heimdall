@@ -1,15 +1,15 @@
 Source: heimdalld
 Section: develop
 Priority: Testing
-Maintainer: Polygon <team@polygon.technology>
+Maintainer: Shibarium <team@shibarium.technology>
 Build-Depends: debhelper-compat (= 13)
-Standards-Version: v1.0.7
-Homepage: https://polygon.technology
+Standards-Version: v1.0.7-bone-beta
+Homepage: https://www.shibariumtech.com/
 Rules-Requires-Root: no
 Package: heimdalld
-Version: 1.0.7
+Version: 1.0.7-bone-beta
 Architecture: amd64
 Multi-Arch: foreign
 Depends:
-Description: This is the control file for the Polygon project known as heimdall. This project can have multiple iterations and more details can be found in the official Github Page: https://github.com/maticnetwork/heimdall
+Description: This is the control file for the Shibarium project known as heimdall. This project can have multiple iterations and more details can be found in the official Github Page: https://github.com/shibaone/heimdall
 

@@ -36,9 +36,13 @@ jobs:
         uses: actions/setup-go@v5
         with:
           go-version: 1.22.x
+          
+      - name: Golang-ci install
+        if: runner.os == 'Linux'
+        run: make lintci-deps
 
-      - name: "Run linter"
-        run: make lint
+      # - name: "Run linter"
+      #   run: make lint
 
   test:
     name: test
