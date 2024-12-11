@@ -118,6 +118,11 @@ var (
 func TestBroadcastToHeimdall(t *testing.T) {
 	t.Parallel()
 
+	mockCtrl := prepareMockData(t)
+	t.Cleanup(func() {
+		mockCtrl.Finish()
+	})
+
 	viper.Set(helper.TendermintNodeFlag, dummyTenderMintNodeUrl)
 	viper.Set("log_level", "info")
 
@@ -126,9 +131,6 @@ func TestBroadcastToHeimdall(t *testing.T) {
 	configuration.HeimdallServerURL = dummyHeimdallServerUrl
 	helper.SetTestConfig(configuration)
 	helper.SetTestPrivPubKey(privKey)
-
-	mockCtrl := prepareMockData(t)
-	defer mockCtrl.Finish()
 
 	testOpts := helper.NewTestOpts(nil, testChainId)
 	heimdallApp, sdkCtx, _ := createTestApp(false, testOpts)
@@ -190,15 +192,18 @@ func TestBroadcastToHeimdall(t *testing.T) {
 	}
 
 	for _, tc := range testCases {
-		if tc.expErr {
-			updateMockData(t)
-		}
+		tc := tc // Capture range variable
 		t.Run(tc.name, func(t *testing.T) {
 			t.Parallel()
+			if tc.expErr {
+				updateMockData(t)
+			}
+
 			if tc.op != nil {
 				err := tc.op(heimdallApp)
 				require.NoError(t, err)
 			}
+
 			txRes, err := txBroadcaster.BroadcastToHeimdall(tc.msg, nil, testOpts)
 			require.NoError(t, err)
 			require.Equal(t, tc.expResCode, txRes.Code)
