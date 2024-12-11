@@ -189,12 +189,12 @@ func TestBroadcastToHeimdall(t *testing.T) {
 		},
 	}
 
-	//nolint:paralleltest
 	for _, tc := range testCases {
 		if tc.expErr {
 			updateMockData(t)
 		}
 		t.Run(tc.name, func(t *testing.T) {
+			t.Parallel()
 			if tc.op != nil {
 				err := tc.op(heimdallApp)
 				require.NoError(t, err)

@@ -49,7 +49,6 @@ import (
 	sdktrace "go.opentelemetry.io/otel/sdk/trace"
 	semconv "go.opentelemetry.io/otel/semconv/v1.4.0"
 	"golang.org/x/sync/errgroup"
-	"google.golang.org/grpc"
 
 	ethCommon "github.com/ethereum/go-ethereum/common"
 
@@ -365,7 +364,7 @@ func startOpenTracing(cmd *cobra.Command) (*sdktrace.TracerProvider, *context.Co
 				ctx,
 				otlptracegrpc.WithInsecure(),
 				otlptracegrpc.WithEndpoint(openCollectorEndpoint),
-				otlptracegrpc.WithDialOption(grpc.WithBlock()),
+				otlptracegrpc.WithTimeout(5*time.Second),
 			)
 			traceExporterReady <- traceExporter
 		}()
