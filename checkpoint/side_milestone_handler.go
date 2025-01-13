@@ -7,7 +7,6 @@ import (
 	abci "github.com/tendermint/tendermint/abci/types"
 	tmTypes "github.com/tendermint/tendermint/types"
 
-	cmTypes "github.com/maticnetwork/heimdall/chainmanager/types"
 	"github.com/maticnetwork/heimdall/checkpoint/types"
 	"github.com/maticnetwork/heimdall/common"
 	"github.com/maticnetwork/heimdall/helper"
@@ -43,8 +42,9 @@ func SideHandleMsgMilestone(ctx sdk.Context, k Keeper, msg types.MsgMilestone, c
 		return common.ErrorSideTx(k.Codespace(), common.CodeInvalidBlockInput)
 	}
 
-	// Validating the milestone
-	validMilestone, err := types.ValidateMilestone(msg.StartBlock, msg.EndBlock, msg.Hash, msg.MilestoneID, contractCaller, milestoneLength, cmTypes.DefaultMaticchainMilestoneTxConfirmations)
+	//Validating the milestone
+	validMilestone, err := types.ValidateMilestone(msg.StartBlock, msg.EndBlock, msg.Hash, msg.MilestoneID, contractCaller, milestoneLength, helper.MaticChainMilestoneConfirmation)
+
 	if err != nil {
 		logger.Error("Error validating milestone",
 			"startBlock", msg.StartBlock,

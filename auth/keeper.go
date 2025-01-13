@@ -76,14 +76,12 @@ func (ak AccountKeeper) NewAccount(ctx sdk.Context, acc types.Account) types.Acc
 // GetAccount implements sdk.AccountKeeper.
 func (ak AccountKeeper) GetAccount(ctx sdk.Context, addr hmTypes.HeimdallAddress) types.Account {
 	store := ctx.KVStore(ak.key)
-
 	bz := store.Get(types.AddressStoreKey(addr))
 	if bz == nil {
 		return nil
 	}
 
 	acc := ak.decodeAccount(bz)
-
 	return acc
 }
 

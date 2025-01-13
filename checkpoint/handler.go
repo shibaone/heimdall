@@ -264,7 +264,8 @@ func handleMsgCheckpointNoAck(ctx sdk.Context, msg types.MsgCheckpointNoAck, k K
 		return common.ErrInvalidNoACK(k.Codespace()).Result()
 	}
 
-	//Hardfork to check the validity of the NoAckProposer
+	//Hardfork to check the validaty of the NoAckProposer
+
 	if ctx.BlockHeight() >= helper.GetAalborgHardForkHeight() {
 		timeDiff := currentTime.Sub(lastCheckpointTime)
 
@@ -301,7 +302,6 @@ func handleMsgCheckpointNoAck(ctx sdk.Context, msg types.MsgCheckpointNoAck, k K
 
 		return common.ErrTooManyNoACK(k.Codespace()).Result()
 	}
-
 	// Set new last no-ack
 	newLastNoAck := uint64(currentTime.Unix())
 	k.SetLastNoAck(ctx, newLastNoAck)

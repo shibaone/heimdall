@@ -89,7 +89,6 @@ func NewAnteHandler(
 			newCtx = SetGasMeter(simulate, ctx, 0)
 			return newCtx, sdk.ErrTxDecode("error decoding transaction").Result(), true
 		}
-
 		// get account params
 		params := ak.GetParams(ctx)
 
@@ -105,7 +104,6 @@ func NewAnteHandler(
 
 		// new gas meter
 		newCtx = SetGasMeter(simulate, ctx, gasForTx)
-
 		// AnteHandlers must have their own defer/recover in order for the BaseApp
 		// to know how much gas was used! This is because the GasMeter is created in
 		// the AnteHandler, but if it panics the context won't be set properly in
@@ -128,7 +126,6 @@ func NewAnteHandler(
 				}
 			}
 		}()
-
 		// validate tx
 		if err := tx.ValidateBasic(); err != nil {
 			return newCtx, err.Result(), true
@@ -145,30 +142,25 @@ func NewAnteHandler(
 		if len(signerAddrs) == 0 {
 			return newCtx, sdk.ErrNoSignatures("no signers").Result(), true
 		}
-
 		if len(signerAddrs) > 1 {
 			return newCtx, sdk.ErrUnauthorized("wrong number of signers").Result(), true
 		}
 
 		isGenesis := ctx.BlockHeight() == 0
-
 		// fetch first signer, who's going to pay the fees
 		signerAcc, res := GetSignerAcc(newCtx, ak, types.AccAddressToHeimdallAddress(signerAddrs[0]))
 		if !res.IsOK() {
 			return newCtx, res, true
 		}
-
 		// deduct the fees
 		if !feeForTx.IsZero() {
 			res = DeductFees(feeCollector, newCtx, signerAcc, feeForTx)
 			if !res.IsOK() {
 				return newCtx, res, true
 			}
-
 			// reload the account as fees have been deducted
 			signerAcc = ak.GetAccount(newCtx, signerAcc.GetAddress())
 		}
-
 		// stdSigs contains the sequence number, account number, and signatures.
 		// When simulating, this would just be a 0-length slice.
 		stdSigs := stdTx.GetSignatures()
@@ -182,7 +174,6 @@ func NewAnteHandler(
 		}
 
 		ak.SetAccount(newCtx, signerAcc)
-
 		// TODO: tx tags (?)
 		return newCtx, sdk.Result{GasWanted: gasForTx}, false // continue...
 	}
@@ -198,7 +189,6 @@ func GetSignerAcc(
 	if acc := ak.GetAccount(ctx, addr); acc != nil {
 		return acc, sdk.Result{}
 	}
-
 	return nil, sdk.ErrUnknownAddress(fmt.Sprintf("account %s does not exist", addr)).Result()
 }
 
@@ -231,7 +221,6 @@ func processSig(
 	if res := sigGasConsumer(ctx.GasMeter(), sig, params); !res.IsOK() {
 		return nil, res
 	}
-
 	if !simulate {
 		var pk secp256k1.PubKeySecp256k1
 
@@ -241,7 +230,6 @@ func processSig(
 		}
 
 		copy(pk[:], p[:])
-
 		if !bytes.Equal(acc.GetAddress().Bytes(), pk.Address().Bytes()) {
 			return nil, sdk.ErrUnauthorized("signature verification failed; verify correct account sequence and chain-id").Result()
 		}
@@ -253,11 +241,9 @@ func processSig(
 			}
 		}
 	}
-
 	if err := acc.SetSequence(acc.GetSequence() + 1); err != nil {
 		return nil, sdk.ErrUnauthorized("error while updating account sequence").Result()
 	}
-
 	return acc, res
 }
 
@@ -278,11 +264,9 @@ func DefaultSigVerificationGasConsumer(
 func DeductFees(feeCollector FeeCollector, ctx sdk.Context, acc authTypes.Account, fees sdk.Coins) sdk.Result {
 	blockTime := ctx.BlockHeader().Time
 	coins := acc.GetCoins()
-
 	if !fees.IsValid() {
 		return sdk.ErrInsufficientFee(fmt.Sprintf("invalid fee amount: %s", fees)).Result()
 	}
-
 	// verify the account has enough funds to pay for fees
 	_, hasNeg := coins.SafeSub(fees)
 	if hasNeg {
@@ -290,7 +274,6 @@ func DeductFees(feeCollector FeeCollector, ctx sdk.Context, acc authTypes.Accoun
 			fmt.Sprintf("insufficient funds to pay for fees; %s < %s", coins, fees),
 		).Result()
 	}
-
 	// Validate the account has enough "spendable" coins
 	spendableCoins := acc.SpendableCoins(blockTime)
 	if _, hasNeg := spendableCoins.SafeSub(fees); hasNeg {
@@ -298,12 +281,10 @@ func DeductFees(feeCollector FeeCollector, ctx sdk.Context, acc authTypes.Accoun
 			fmt.Sprintf("insufficient funds to pay for fees; %s < %s", spendableCoins, fees),
 		).Result()
 	}
-
 	err := feeCollector.SendCoinsFromAccountToModule(ctx, acc.GetAddress(), authTypes.FeeCollectorName, fees)
 	if err != nil {
 		return err.Result()
 	}
-
 	return sdk.Result{}
 }
 
@@ -325,7 +306,6 @@ func GetSignBytes(ctx sdk.Context, chainID string, stdTx authTypes.StdTx, acc au
 	if !genesis {
 		accNum = acc.GetAccountNumber()
 	}
-
 	signBytes := authTypes.StdSignBytes(chainID, accNum, acc.GetSequence(), stdTx.Msg, stdTx.Memo)
 
 	if ctx.BlockHeight() > helper.GetNewHexToStringAlgoHeight() {
@@ -335,10 +315,8 @@ func GetSignBytes(ctx sdk.Context, chainID string, stdTx authTypes.StdTx, acc au
 	const newData = ",\"data\":\"0x\","
 
 	const oldData = ",\"data\":\"0x0\","
-
 	if bytes.Contains(signBytes, []byte(newData)) {
 		signBytes = bytes.Replace(signBytes, []byte(newData), []byte(oldData), 1)
 	}
-
 	return signBytes
 }
