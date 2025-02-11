@@ -15,8 +15,7 @@ jobs:
     permissions:
       id-token: write
       contents: write
-    runs-on:
-      labels: arm-runner-2204
+    runs-on: ubuntu-22.04-arm
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -45,29 +44,29 @@ jobs:
           mkdir -p packaging/rpm/BUILD
           mkdir -p packaging/rpm/RPMS
           mkdir -p packaging/rpm/SRPMS
-          
-          touch packaging/rpm/heimdall.spec 
+
+          touch packaging/rpm/heimdall.spec
           echo "Name: heimdall" >> packaging/rpm/SPECS/heimdall.spec
           echo "Version: ${{ env.GIT_TAG1 }}" >> packaging/rpm/SPECS/heimdall.spec
           echo "Release: 1%{?dist}" >> packaging/rpm/SPECS/heimdall.spec
           echo "License: GPL/AGPL" >> packaging/rpm/SPECS/heimdall.spec
           echo "BuildArch: aarch64" >> packaging/rpm/SPECS/heimdall.spec
           echo "Summary: heimdall rpm package" >> packaging/rpm/SPECS/heimdall.spec
-          
+
           echo "%description" >> packaging/rpm/SPECS/heimdall.spec
           echo "heimdall rpm package" >> packaging/rpm/SPECS/heimdall.spec
-          
+
           echo "%pre" >> packaging/rpm/SPECS/heimdall.spec
           echo "getent group heimdall >/dev/null || groupadd -r heimdall" >> packaging/rpm/SPECS/heimdall.spec
           echo "getent passwd heimdall >/dev/null || useradd -s /bin/false -d /var/lib/heimdall -r heimdall -g heimdall" >> packaging/rpm/SPECS/heimdall.spec
-          
+
           echo "%install" >> packaging/rpm/SPECS/heimdall.spec
           echo "mkdir -p %{buildroot}/usr/bin" >> packaging/rpm/SPECS/heimdall.spec
           echo "cp /home/runner/work/heimdall/heimdall/build/heimdalld %{buildroot}/usr/bin/" >> packaging/rpm/SPECS/heimdall.spec
           echo "cp /home/runner/work/heimdall/heimdall/build/heimdallcli %{buildroot}/usr/bin/" >> packaging/rpm/SPECS/heimdall.spec
-          
+
           echo "%files" >> packaging/rpm/SPECS/heimdall.spec
-          
+
           echo "/usr/bin/heimdalld" >> packaging/rpm/SPECS/heimdall.spec
           echo "/usr/bin/heimdallcli" >> packaging/rpm/SPECS/heimdall.spec
 
