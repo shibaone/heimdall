@@ -11,7 +11,7 @@ on:
       - 'v*.*.*-*'
 
 env:
-  NETWORK: puppynet
+  NETWORK: shibarium
 
 jobs:
   build:
