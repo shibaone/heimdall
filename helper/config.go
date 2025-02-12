@@ -446,6 +446,8 @@ func InitHeimdallConfigWith(homeDir string, heimdallConfigFileFromFLag string) {
 		spanOverrideHeight = 0
 		newHexToStringAlgoHeight = 0
 		aalborgHeight = 3941864
+		jorvikHeight = -1
+		danelawHeight = -1
 	default:
 		newSelectionAlgoHeight = 0
 		spanOverrideHeight = 0
