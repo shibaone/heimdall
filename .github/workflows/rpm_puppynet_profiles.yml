@@ -10,6 +10,9 @@ on:
       - 'v*.*.*'
       - 'v*.*.*-*'
 
+env:
+  NETWORK: puppynet
+
 jobs:
   build:
     permissions:
@@ -63,7 +66,8 @@ jobs:
           echo "%install" >> packaging/rpm/SPECS/heimdall-puppynet-sentry.spec
           echo "mkdir -p %{buildroot}/var/lib/heimdall/config" >> packaging/rpm/SPECS/heimdall-puppynet-sentry.spec
           echo "mkdir -p %{buildroot}/lib/systemd/system" >> packaging/rpm/SPECS/heimdall-puppynet-sentry.spec
-          echo "cp /home/runner/work/heimdall/heimdall/packaging/templates/systemd/heimdalld-puppynet-sentry.service %{buildroot}/lib/systemd/system/heimdalld.service" >> packaging/rpm/SPECS/heimdall-puppynet-sentry.spec
+          sed -i 's/{{NETWORK}}/${{env.NETWORK}}/' /home/runner/work/heimdall/heimdall/packaging/templates/systemd/heimdalld-sentry.service
+          echo "cp /home/runner/work/heimdall/heimdall/packaging/templates/systemd/heimdalld-sentry.service %{buildroot}/lib/systemd/system/heimdalld.service" >> packaging/rpm/SPECS/heimdall-puppynet-sentry.spec
           echo "cp /home/runner/work/heimdall/heimdall/packaging/templates/config/puppynet/config.toml %{buildroot}/var/lib/heimdall/config/config.toml" >> packaging/rpm/SPECS/heimdall-puppynet-sentry.spec
           echo "cp /home/runner/work/heimdall/heimdall/packaging/templates/config/puppynet/heimdall-config.toml %{buildroot}/var/lib/heimdall/config/heimdall-config.toml" >> packaging/rpm/SPECS/heimdall-puppynet-sentry.spec
 
@@ -108,7 +112,8 @@ jobs:
           echo "%install" >> packaging/rpm/SPECS/heimdall-puppynet-validator.spec
           echo "mkdir -p %{buildroot}/var/lib/heimdall" >> packaging/rpm/SPECS/heimdall-puppynet-validator.spec
           echo "mkdir -p %{buildroot}/lib/systemd/system" >> packaging/rpm/SPECS/heimdall-puppynet-validator.spec
-          echo "cp /home/runner/work/heimdall/heimdall/packaging/templates/systemd/heimdalld-puppynet-validator.service %{buildroot}/lib/systemd/system/heimdalld.service" >> packaging/rpm/SPECS/heimdall-puppynet-validator.spec
+          sed -i 's/{{NETWORK}}/${{env.NETWORK}}/' /home/runner/work/heimdall/heimdall/packaging/templates/systemd/heimdalld-validator.service
+          echo "cp /home/runner/work/heimdall/heimdall/packaging/templates/systemd/heimdalld-validator.service %{buildroot}/lib/systemd/system/heimdalld.service" >> packaging/rpm/SPECS/heimdall-puppynet-validator.spec
           echo "cp /home/runner/work/heimdall/heimdall/packaging/templates/config/puppynet/config.toml %{buildroot}/var/lib/heimdall/config/config.toml" >> packaging/rpm/SPECS/heimdall-puppynet-sentry.spec
           echo "cp /home/runner/work/heimdall/heimdall/packaging/templates/config/puppynet/heimdall-config.toml %{buildroot}/var/lib/heimdall/config/heimdall-config.toml" >> packaging/rpm/SPECS/heimdall-puppynet-sentry.spec
 

@@ -10,6 +10,9 @@ on:
       - 'v*.*.*'
       - 'v*.*.*-*'
 
+env:
+  NETWORK: puppynet
+
 jobs:
   build:
     permissions:
@@ -40,9 +43,6 @@ jobs:
           mkdir -p packaging/rpm/RPMS
           mkdir -p packaging/rpm/SRPMS
 
-      - name: Starting Shibarium Builds
-        run: echo "##########################################################################"
-
       - name: Start tasks needed for Shibarium Sentry node
         run: echo "#########################################################################"
 
@@ -66,7 +66,8 @@ jobs:
           echo "%install" >> packaging/rpm/SPECS/heimdall-shibarium-sentry.spec
           echo "mkdir -p %{buildroot}/var/lib/heimdall" >> packaging/rpm/SPECS/heimdall-shibarium-sentry.spec
           echo "mkdir -p %{buildroot}/lib/systemd/system" >> packaging/rpm/SPECS/heimdall-shibarium-sentry.spec
-          echo "cp /home/runner/work/heimdall/heimdall/packaging/templates/systemd/heimdalld-shibarium-sentry.service %{buildroot}/lib/systemd/system/heimdalld.service" >> packaging/rpm/SPECS/heimdall-shibarium-sentry.spec
+          sed -i 's/{{NETWORK}}/${{env.NETWORK}}/' /home/runner/work/heimdall/heimdall/packaging/templates/systemd/heimdalld-sentry.service
+          echo "cp /home/runner/work/heimdall/heimdall/packaging/templates/systemd/heimdalld-sentry.service %{buildroot}/lib/systemd/system/heimdalld.service" >> packaging/rpm/SPECS/heimdall-shibarium-sentry.spec
           echo "cp /home/runner/work/heimdall/heimdall/packaging/templates/config/shibarium/config.toml %{buildroot}/var/lib/heimdall/config/config.toml" >> packaging/rpm/SPECS/heimdall-amoy-sentry.spec
           echo "cp /home/runner/work/heimdall/heimdall/packaging/templates/config/shibarium/heimdall-config.toml %{buildroot}/var/lib/heimdall/config/heimdall-config.toml" >> packaging/rpm/SPECS/heimdall-amoy-sentry.spec
 
@@ -111,7 +112,8 @@ jobs:
           echo "%install" >> packaging/rpm/SPECS/heimdall-shibarium-validator.spec
           echo "mkdir -p %{buildroot}/var/lib/heimdall" >> packaging/rpm/SPECS/heimdall-shibarium-validator.spec
           echo "mkdir -p %{buildroot}/lib/systemd/system" >> packaging/rpm/SPECS/heimdall-shibarium-validator.spec
-          echo "cp /home/runner/work/heimdall/heimdall/packaging/templates/systemd/heimdalld-shibarium-validator.service %{buildroot}/lib/systemd/system/heimdalld.service" >> packaging/rpm/SPECS/heimdall-shibarium-validator.spec
+          sed -i 's/{{NETWORK}}/${{env.NETWORK}}/' /home/runner/work/heimdall/heimdall/packaging/templates/systemd/heimdalld-validator.service
+          echo "cp /home/runner/work/heimdall/heimdall/packaging/templates/systemd/heimdalld-validator.service %{buildroot}/lib/systemd/system/heimdalld.service" >> packaging/rpm/SPECS/heimdall-shibarium-validator.spec
           echo "cp /home/runner/work/heimdall/heimdall/packaging/templates/config/shibarium/config.toml %{buildroot}/var/lib/heimdall/config/config.toml" >> packaging/rpm/SPECS/heimdall-amoy-sentry.spec
           echo "cp /home/runner/work/heimdall/heimdall/packaging/templates/config/shibarium/heimdall-config.toml %{buildroot}/var/lib/heimdall/config/heimdall-config.toml" >> packaging/rpm/SPECS/heimdall-amoy-sentry.spec
 
@@ -124,7 +126,6 @@ jobs:
           echo "%post" >> packaging/rpm/SPECS/heimdall-shibarium-validator.spec
           echo "/bin/systemctl daemon-reload" >> packaging/rpm/SPECS/heimdall-shibarium-validator.spec
 
-
       - name: Build Shibarium Validator Node profile RPM
         run: |
           rpmbuild --define "_topdir /home/runner/work/heimdall/heimdall/packaging/rpm_build" \
@@ -133,7 +134,6 @@ jobs:
            --define "_srcrpmdir %{_topdir}/SRPMS" \
            --define "__spec_install_post /bin/true" \
            -bb packaging/rpm/SPECS/heimdall-shibarium-validator.spec
-
 
       - name: rename packages due to rpm dist rules Shibarium validator
         run:  mv /home/runner/work/heimdall/heimdall/packaging/rpm_build/RPMS/noarch/heimdall-shibarium-validator-config-${{ env.GIT_TAG1 }}-1.noarch.rpm /home/runner/work/heimdall/heimdall/packaging/rpm_build/RPMS/noarch/heimdall-shibarium-validator-config-${{ env.GIT_TAG1 }}.noarch.rpm

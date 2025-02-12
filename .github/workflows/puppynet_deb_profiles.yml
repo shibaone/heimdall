@@ -67,7 +67,7 @@ jobs:
       - name: Copying preinst for ${{ env.NODE }} on ${{ env.NETWORK }} on ${{ env.ARCH }}
         run: |
           cp -rp packaging/templates/package_scripts/preinst packaging/deb/heimdall-${{ env.NETWORK }}-${{ env.NODE }}-config_${{ env.GIT_TAG }}-${{ env.ARCH }}/DEBIAN/preinst
-          sed -i '' "s/{{NETWORK}}/${{ env.NETWORK }}/g" packaging/deb/heimdall-${{ env.NETWORK }}-${{ env.NODE }}-config_${{ env.GIT_TAG }}-${{ env.ARCH }}/DEBIAN/preinst
+          sed -i "s/{{NETWORK}}/${{ env.NETWORK }}/g" packaging/deb/heimdall-${{ env.NETWORK }}-${{ env.NODE }}-config_${{ env.GIT_TAG }}-${{ env.ARCH }}/DEBIAN/preinst
         env:
           ARCH: all
           NODE: sentry
@@ -87,7 +87,7 @@ jobs:
       - name: Copying systemd file for ${{ env.NODE }} on ${{ env.NETWORK }} on ${{ env.ARCH }}
         run: |
           cp -rp packaging/templates/systemd/heimdalld-sentry.service packaging/deb/heimdall-${{ env.NETWORK }}-${{ env.NODE }}-config_${{ env.GIT_TAG }}-${{ env.ARCH }}/lib/systemd/system/heimdalld.service
-          sed -i '' 's/{{NETWORK}}/${{ env.NETWORK }}/g' packaging/deb/heimdall-${{ env.NETWORK }}-${{ env.NODE }}-config_${{ env.GIT_TAG }}-${{ env.ARCH }}/lib/systemd/system/heimdalld.service
+          sed -i "s/{{NETWORK}}/${{ env.NETWORK }}/g" packaging/deb/heimdall-${{ env.NETWORK }}-${{ env.NODE }}-config_${{ env.GIT_TAG }}-${{ env.ARCH }}/lib/systemd/system/heimdalld.service
         env:
           ARCH: all
           NODE: sentry
@@ -117,7 +117,7 @@ jobs:
       - name: Copying preinst for ${{ env.NODE }} on ${{ env.NETWORK }} on ${{ env.ARCH }}
         run: |
           cp -rp packaging/templates/package_scripts/preinst packaging/deb/heimdall-${{ env.NETWORK }}-${{ env.NODE }}-config_${{ env.GIT_TAG }}-${{ env.ARCH }}/DEBIAN/preinst
-          sed -i '' "s/{{NETWORK}}/${{ env.NETWORK }}/g" packaging/deb/heimdall-${{ env.NETWORK }}-${{ env.NODE }}-config_${{ env.GIT_TAG }}-${{ env.ARCH }}/DEBIAN/preinst
+          sed -i "s/{{NETWORK}}/${{ env.NETWORK }}/g" packaging/deb/heimdall-${{ env.NETWORK }}-${{ env.NODE }}-config_${{ env.GIT_TAG }}-${{ env.ARCH }}/DEBIAN/preinst
         env:
           ARCH: all
           NODE: validator
@@ -137,7 +137,7 @@ jobs:
       - name: Copying systemd file for ${{ env.NODE }} on ${{ env.NETWORK }} on ${{ env.ARCH }}
         run: |
           cp -rp packaging/templates/systemd/heimdalld-validator.service packaging/deb/heimdall-${{ env.NETWORK }}-${{ env.NODE }}-config_${{ env.GIT_TAG }}-${{ env.ARCH }}/lib/systemd/system/heimdalld.service
-          sed -i '' 's/{{NETWORK}}/${{ env.NETWORK }}/g' packaging/deb/heimdall-${{ env.NETWORK }}-${{ env.NODE }}-config_${{ env.GIT_TAG }}-${{ env.ARCH }}/lib/systemd/system/heimdalld.service
+          sed -i "s/{{NETWORK}}/${{ env.NETWORK }}/g" packaging/deb/heimdall-${{ env.NETWORK }}-${{ env.NODE }}-config_${{ env.GIT_TAG }}-${{ env.ARCH }}/lib/systemd/system/heimdalld.service
         env:
           ARCH: all
           NODE: validator
