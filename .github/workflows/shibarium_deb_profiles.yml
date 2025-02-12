@@ -56,14 +56,18 @@ jobs:
           ARCH: all
           NODE: sentry
           NETWORK: shibarium
-      - name: Copying the postinst for ${{ env.NODE }} on ${{ env.NETWORK }} on ${{ env.ARCH }}
-        run: cp -rp packaging/templates/package_scripts/postinst.profile.shibarium packaging/deb/heimdall-${{ env.NETWORK }}-${{ env.NODE }}-config_${{ env.GIT_TAG }}-${{ env.ARCH }}/DEBIAN/postinst
+      - name: Copying the Postinst/Postrm for ${{ env.NODE }} on ${{ env.NETWORK }} on ${{ env.ARCH }}
+        run: |
+          cp -rp packaging/templates/package_scripts/postinst.profile packaging/deb/heimdall-${{ env.NETWORK }}-${{ env.NODE }}-config_${{ env.GIT_TAG }}-${{ env.ARCH }}/DEBIAN/postinst
+          cp -rp packaging/templates/package_scripts/postrm.profile packaging/deb/heimdall-${{ env.NETWORK }}-${{ env.NODE }}-config_${{ env.GIT_TAG }}-${{ env.ARCH }}/DEBIAN/postrm
         env:
           ARCH: all
           NODE: sentry
           NETWORK: shibarium
       - name: Copying preinst for ${{ env.NODE }} on ${{ env.NETWORK }} on ${{ env.ARCH }}
-        run: cp -rp packaging/templates/package_scripts/preinst.${{ env.NETWORK }} packaging/deb/heimdall-${{ env.NETWORK }}-${{ env.NODE }}-config_${{ env.GIT_TAG }}-${{ env.ARCH }}/DEBIAN/preinst
+        run: |
+          cp -rp packaging/templates/package_scripts/preinst packaging/deb/heimdall-${{ env.NETWORK }}-${{ env.NODE }}-config_${{ env.GIT_TAG }}-${{ env.ARCH }}/DEBIAN/preinst
+          sed -i '' "s/{{NETWORK}}/${{ env.NETWORK }}/g" packaging/deb/heimdall-${{ env.NETWORK }}-${{ env.NODE }}-config_${{ env.GIT_TAG }}-${{ env.ARCH }}/DEBIAN/preinst
         env:
           ARCH: all
           NODE: sentry
@@ -86,14 +90,10 @@ jobs:
           ARCH: all
           NODE: sentry
           NETWORK: shibarium
-      - name: Copying the postrm for ${{ env.NODE }} on ${{ env.NETWORK }} on ${{ env.ARCH }}
-        run: cp -rp packaging/templates/package_scripts/postrm.profile packaging/deb/heimdall-${{ env.NETWORK }}-${{ env.NODE }}-config_${{ env.GIT_TAG }}-${{ env.ARCH }}/DEBIAN/postrm
-        env:
-          ARCH: all
-          NODE: sentry
-          NETWORK: shibarium
       - name: Copying systemd file for ${{ env.NODE }} on ${{ env.NETWORK }} on ${{ env.ARCH }}
-        run: cp -rp packaging/templates/systemd/heimdalld-shibarium-sentry.service packaging/deb/heimdall-${{ env.NETWORK }}-${{ env.NODE }}-config_${{ env.GIT_TAG }}-${{ env.ARCH }}/lib/systemd/system/heimdalld.service
+        run: |
+          cp -rp packaging/templates/systemd/heimdalld-sentry.service packaging/deb/heimdall-${{ env.NETWORK }}-${{ env.NODE }}-config_${{ env.GIT_TAG }}-${{ env.ARCH }}/lib/systemd/system/heimdalld.service
+          sed -i '' 's/{{NETWORK}}/${{ env.NETWORK }}/g' packaging/deb/heimdall-${{ env.NETWORK }}-${{ env.NODE }}-config_${{ env.GIT_TAG }}-${{ env.ARCH }}/lib/systemd/system/heimdalld.service
         env:
           ARCH: all
           NODE: sentry
@@ -112,8 +112,10 @@ jobs:
           ARCH: all
           NODE: validator
           NETWORK: shibarium
-      - name: Copying Postinstall script for ${{ env.NODE }} on ${{ env.NETWORK }} on ${{ env.ARCH }}
-        run: cp -rp packaging/templates/package_scripts/postinst.profile.shibarium packaging/deb/heimdall-${{ env.NETWORK }}-${{ env.NODE }}-config_${{ env.GIT_TAG }}-${{ env.ARCH }}/DEBIAN/postinst
+      - name: Copying Postinstall/Postrm script for ${{ env.NODE }} on ${{ env.NETWORK }} on ${{ env.ARCH }}
+        run: |
+          cp -rp packaging/templates/package_scripts/postinst.profile packaging/deb/heimdall-${{ env.NETWORK }}-${{ env.NODE }}-config_${{ env.GIT_TAG }}-${{ env.ARCH }}/DEBIAN/postinst
+          cp -rp packaging/templates/package_scripts/postrm.profile packaging/deb/heimdall-${{ env.NETWORK }}-${{ env.NODE }}-config_${{ env.GIT_TAG }}-${{ env.ARCH }}/DEBIAN/postrm
         env:
           ARCH: all
           NODE: validator
@@ -125,7 +127,9 @@ jobs:
           NODE: validator
           NETWORK: shibarium
       - name: Copying preinst for ${{ env.NODE }} on ${{ env.NETWORK }} on ${{ env.ARCH }}
-        run: cp -rp packaging/templates/package_scripts/preinst.${{ env.NETWORK }} packaging/deb/heimdall-${{ env.NETWORK }}-${{ env.NODE }}-config_${{ env.GIT_TAG }}-${{ env.ARCH }}/DEBIAN/preinst
+        run: |
+          cp -rp packaging/templates/package_scripts/preinst packaging/deb/heimdall-${{ env.NETWORK }}-${{ env.NODE }}-config_${{ env.GIT_TAG }}-${{ env.ARCH }}/DEBIAN/preinst
+          sed -i '' "s/{{NETWORK}}/${{ env.NETWORK }}/g" packaging/deb/heimdall-${{ env.NETWORK }}-${{ env.NODE }}-config_${{ env.GIT_TAG }}-${{ env.ARCH }}/DEBIAN/preinst
         env:
           ARCH: all
           NODE: validator
@@ -142,14 +146,10 @@ jobs:
           ARCH: all
           NODE: validator
           NETWORK: shibarium
-      - name: Copying the postrm for ${{ env.NODE }} on ${{ env.NETWORK }} on ${{ env.ARCH }}
-        run: cp -rp packaging/templates/package_scripts/postrm.profile packaging/deb/heimdall-${{ env.NETWORK }}-${{ env.NODE }}-config_${{ env.GIT_TAG }}-${{ env.ARCH }}/DEBIAN/postrm
-        env:
-          ARCH: all
-          NODE: validator
-          NETWORK: shibarium
       - name: Copying systemd file for ${{ env.NODE }} on ${{ env.NETWORK }} on ${{ env.ARCH }}
-        run: cp -rp packaging/templates/systemd/heimdalld-shibarium-validator.service packaging/deb/heimdall-${{ env.NETWORK }}-${{ env.NODE }}-config_${{ env.GIT_TAG }}-${{ env.ARCH }}/lib/systemd/system/heimdalld.service
+        run: |
+          cp -rp packaging/templates/systemd/heimdalld-validator.service packaging/deb/heimdall-${{ env.NETWORK }}-${{ env.NODE }}-config_${{ env.GIT_TAG }}-${{ env.ARCH }}/lib/systemd/system/heimdalld.service
+          sed -i '' 's/{{NETWORK}}/puppynet/g' packaging/deb/heimdall-${{ env.NETWORK }}-${{ env.NODE }}-config_${{ env.GIT_TAG }}-${{ env.ARCH }}/lib/systemd/system/heimdalld.service
         env:
           ARCH: all
           NODE: validator
