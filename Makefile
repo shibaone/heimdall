@@ -75,18 +75,18 @@ vulncheck:
 build-docker:
 	@echo Fetching latest tag: $(LATEST_GIT_TAG)
 	git checkout $(LATEST_GIT_TAG)
-	docker build -t "maticnetwork/heimdall:$(LATEST_GIT_TAG)" -f docker/Dockerfile .
+	docker build -t "shibaone/heimdall:$(LATEST_GIT_TAG)" -f docker/Dockerfile .
 
 push-docker:
 	@echo Pushing docker tag image: $(LATEST_GIT_TAG)
-	docker push "maticnetwork/heimdall:$(LATEST_GIT_TAG)"
+	docker push "shibaone/heimdall:$(LATEST_GIT_TAG)"
 
 build-docker-develop:
-	docker build -t "maticnetwork/heimdall:develop" -f docker/Dockerfile.develop .
+	docker build -t "shibaone/heimdall:develop" -f docker/Dockerfile.develop .
 
 .PHONY: contracts build
 
-PACKAGE_NAME          := github.com/maticnetwork/heimdall
+PACKAGE_NAME          := github.com/shibaone/heimdall
 GOLANG_CROSS_VERSION  ?= v1.22.1
 
 .PHONY: release-dry-run
