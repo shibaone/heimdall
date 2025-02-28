@@ -3,11 +3,11 @@ LATEST_GIT_TAG:=$(shell git describe --tags $(git rev-list --tags --max-count=1)
 VERSION := $(shell echo $(shell git describe --tags) | sed 's/^v//')
 COMMIT := $(shell git log -1 --format='%H')
 
-ldflags = -X github.com/maticnetwork/heimdall/version.Name=heimdall \
-		  -X github.com/maticnetwork/heimdall/version.ServerName=heimdalld \
-		  -X github.com/maticnetwork/heimdall/version.ClientName=heimdallcli \
-		  -X github.com/maticnetwork/heimdall/version.Version=$(VERSION) \
-		  -X github.com/maticnetwork/heimdall/version.Commit=$(COMMIT) \
+ldflags = -X github.com/shibaone/heimdall/version.Name=heimdall \
+		  -X github.com/shibaone/heimdall/version.ServerName=heimdalld \
+		  -X github.com/shibaone/heimdall/version.ClientName=heimdallcli \
+		  -X github.com/shibaone/heimdall/version.Version=$(VERSION) \
+		  -X github.com/shibaone/heimdall/version.Commit=$(COMMIT) \
 		  -X github.com/cosmos/cosmos-sdk/version.Name=heimdall \
 		  -X github.com/cosmos/cosmos-sdk/version.ServerName=heimdalld \
 		  -X github.com/cosmos/cosmos-sdk/version.ClientName=heimdallcli \
@@ -63,6 +63,12 @@ ifndef LINT_COMMAND
 endif
 	golangci-lint run --config ./.golangci.yml
 
+
+.PHONY: vulncheck
+
+vulncheck:
+	@go run golang.org/x/vuln/cmd/govulncheck@latest ./...
+
 #
 # docker commands
 #
@@ -70,18 +76,18 @@ endif
 build-docker:
 	@echo Fetching latest tag: $(LATEST_GIT_TAG)
 	git checkout $(LATEST_GIT_TAG)
-	docker build -t "maticnetwork/heimdall:$(LATEST_GIT_TAG)" -f docker/Dockerfile .
+	docker build -t "shibaone/heimdall:$(LATEST_GIT_TAG)" -f docker/Dockerfile .
 
 push-docker:
 	@echo Pushing docker tag image: $(LATEST_GIT_TAG)
-	docker push "maticnetwork/heimdall:$(LATEST_GIT_TAG)"
+	docker push "shibaone/heimdall:$(LATEST_GIT_TAG)"
 
 build-docker-develop:
-	docker build -t "maticnetwork/heimdall:develop" -f docker/Dockerfile.develop .
+	docker build -t "shibaone/heimdall:develop" -f docker/Dockerfile.develop .
 
 .PHONY: contracts build
 
-PACKAGE_NAME          := github.com/maticnetwork/heimdall
+PACKAGE_NAME          := github.com/shibaone/heimdall
 GOLANG_CROSS_VERSION  ?= v1.22.1
 
 .PHONY: release-dry-run
