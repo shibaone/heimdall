@@ -6,11 +6,11 @@ contractsRepo: https://github.com/0xPolygon/pos-contracts.git
 contractsBranch: anvil-pos
 genesisContractsBranch: master
 sprintSize:
-  - '64'
+- '64'
 blockNumber:
-  - '0'
+- '0'
 blockTime:
-  - '2'
+- '5'
 numOfBorValidators: 3
 numOfBorSentries: 0
 numOfBorArchiveNodes: 0
@@ -20,9 +20,9 @@ numOfErigonArchiveNodes: 0
 ethURL: http://anvil:9545
 ethHostUser: ubuntu
 devnetType: docker
-borDockerBuildContext: "https://github.com/maticnetwork/bor.git#develop"
+borDockerBuildContext: "https://github.com/shibaone/bor.git#develop"
 heimdallDockerBuildContext: "../../heimdall"
 sprintSizeBlockNumber:
-  - '0'
+- '0'
 devnetBorFlags: config,config,config
 mnemonic: 'clock radar mass judge dismiss just intact mind resemble fringe diary casino'

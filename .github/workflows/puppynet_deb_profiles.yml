@@ -1,4 +1,4 @@
-name: amoy_deb_profiles
+name: puppynet_deb_profiles
 
 on:
   push:
@@ -15,7 +15,7 @@ jobs:
     permissions:
       id-token: write
       contents: write
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-20.04
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -46,7 +46,7 @@ jobs:
           echo "Section: base" >> packaging/deb/heimdalld/DEBIAN/control
           echo "Priority: optional" >> packaging/deb/heimdalld/DEBIAN/control
           echo "Architecture: all" >> packaging/deb/heimdalld/DEBIAN/control
-          echo "Maintainer: devops@polygon.technology" >> packaging/deb/heimdalld/DEBIAN/control
+          echo "Maintainer: aws@shib.io" >> packaging/deb/heimdalld/DEBIAN/control
           echo "Description: heimdall profile package" >> packaging/deb/heimdalld/DEBIAN/control
 
 #### Sentry Profiles ####
@@ -55,15 +55,15 @@ jobs:
         env:
           ARCH: all
           NODE: sentry
-          NETWORK: amoy
+          NETWORK: puppynet
       - name: Copying Postinst/Postrm for ${{ env.NODE }} on ${{ env.NETWORK }} on ${{ env.ARCH }}
         run: |
           cp -rp packaging/templates/package_scripts/postinst.profile packaging/deb/heimdall-${{ env.NETWORK }}-${{ env.NODE }}-config_${{ env.GIT_TAG }}-${{ env.ARCH }}/DEBIAN/postinst
-          cp -rp packaging/templates/package_scripts/postrm.profile packaging/deb/heimdall-${{ env.NETWORK }}-${{ env.NODE }}-config_${{ env.GIT_TAG }}-${{ env.ARCH }}/DEBIAN/postrm
+          cp -rp packaging/templates/package_scripts/postinst.profile packaging/deb/heimdall-${{ env.NETWORK }}-${{ env.NODE }}-config_${{ env.GIT_TAG }}-${{ env.ARCH }}/DEBIAN/postrm
         env:
           ARCH: all
           NODE: sentry
-          NETWORK: amoy
+          NETWORK: puppynet
       - name: Copying preinst for ${{ env.NODE }} on ${{ env.NETWORK }} on ${{ env.ARCH }}
         run: |
           cp -rp packaging/templates/package_scripts/preinst packaging/deb/heimdall-${{ env.NETWORK }}-${{ env.NODE }}-config_${{ env.GIT_TAG }}-${{ env.ARCH }}/DEBIAN/preinst
@@ -71,19 +71,19 @@ jobs:
         env:
           ARCH: all
           NODE: sentry
-          NETWORK: amoy
-      - name: Copying heimdall-config for ${{ env.NODE }} on ${{ env.NETWORK }} on ${{ env.ARCH }}
+          NETWORK: puppynet
+      - name: Copying heimdall-config config for ${{ env.NODE }} on ${{ env.NETWORK }} on ${{ env.ARCH }}
         run: cp -rp packaging/templates/config/${{ env.NETWORK }}/heimdall-config.toml packaging/deb/heimdall-${{ env.NETWORK }}-${{ env.NODE }}-config_${{ env.GIT_TAG }}-${{ env.ARCH }}/var/lib/heimdall/config/heimdall-config.toml
         env:
           ARCH: all
           NODE: sentry
-          NETWORK: amoy
+          NETWORK: puppynet
       - name: Copying config for ${{ env.NODE }} on ${{ env.NETWORK }} on ${{ env.ARCH }}
         run: cp -rp packaging/templates/config/${{ env.NETWORK }}/config.toml packaging/deb/heimdall-${{ env.NETWORK }}-${{ env.NODE }}-config_${{ env.GIT_TAG }}-${{ env.ARCH }}/var/lib/heimdall/config/config.toml
         env:
           ARCH: all
           NODE: sentry
-          NETWORK: amoy
+          NETWORK: puppynet
       - name: Copying systemd file for ${{ env.NODE }} on ${{ env.NETWORK }} on ${{ env.ARCH }}
         run: |
           cp -rp packaging/templates/systemd/heimdalld-sentry.service packaging/deb/heimdall-${{ env.NETWORK }}-${{ env.NODE }}-config_${{ env.GIT_TAG }}-${{ env.ARCH }}/lib/systemd/system/heimdalld.service
@@ -91,13 +91,13 @@ jobs:
         env:
           ARCH: all
           NODE: sentry
-          NETWORK: amoy
+          NETWORK: puppynet
       - name: Building heimdalld for ${{ env.NODE }} on ${{ env.NETWORK }} on ${{ env.ARCH }} profile
         run: dpkg-deb --build --root-owner-group packaging/deb/heimdall-${{ env.NETWORK }}-${{ env.NODE }}-config_${{ env.GIT_TAG }}-${{ env.ARCH }}
         env:
           ARCH: all
           NODE: sentry
-          NETWORK: amoy
+          NETWORK: puppynet
 
 ### Validator Profiles ###
       - name: Setting heimdalld for ${{ env.NODE }} on ${{ env.NETWORK }} on ${{ env.ARCH }}
@@ -105,15 +105,15 @@ jobs:
         env:
           ARCH: all
           NODE: validator
-          NETWORK: amoy
-      - name: Copying over the postinst/postrm file for ${{ env.NODE }} on ${{ env.NETWORK }} on ${{ env.ARCH }}
+          NETWORK: puppynet
+      - name: Copying over the Postinst/Postrm file for ${{ env.NODE }} on ${{ env.NETWORK }} on ${{ env.ARCH }}
         run: |
-          cp -rp packaging/templates/package_scripts/postinst.profile packaging/deb/heimdall-${{ env.NETWORK }}-${{ env.NODE }}-config_${{ env.GIT_TAG }}-${{ env.ARCH }}/DEBIAN//postinst
-          cp -rp packaging/templates/package_scripts/postrm.profile packaging/deb/heimdall-${{ env.NETWORK }}-${{ env.NODE }}-config_${{ env.GIT_TAG }}-${{ env.ARCH }}/DEBIAN/postrm
+          cp -rp packaging/templates/package_scripts/postinst.profile packaging/deb/heimdall-${{ env.NETWORK }}-${{ env.NODE }}-config_${{ env.GIT_TAG }}-${{ env.ARCH }}/DEBIAN/postinst
+          cp -rp packaging/templates/package_scripts/postinst.profile packaging/deb/heimdall-${{ env.NETWORK }}-${{ env.NODE }}-config_${{ env.GIT_TAG }}-${{ env.ARCH }}/DEBIAN/postrm
         env:
           ARCH: all
           NODE: validator
-          NETWORK: amoy
+          NETWORK: puppynet
       - name: Copying preinst for ${{ env.NODE }} on ${{ env.NETWORK }} on ${{ env.ARCH }}
         run: |
           cp -rp packaging/templates/package_scripts/preinst packaging/deb/heimdall-${{ env.NETWORK }}-${{ env.NODE }}-config_${{ env.GIT_TAG }}-${{ env.ARCH }}/DEBIAN/preinst
@@ -121,19 +121,19 @@ jobs:
         env:
           ARCH: all
           NODE: validator
-          NETWORK: amoy
-      - name: Copying heimdall-config for ${{ env.NODE }} on ${{ env.NETWORK }} on ${{ env.ARCH }}
+          NETWORK: puppynet
+      - name: Copying config for ${{ env.NODE }} on ${{ env.NETWORK }} on ${{ env.ARCH }}
         run: cp -rp packaging/templates/config/${{ env.NETWORK }}/heimdall-config.toml packaging/deb/heimdall-${{ env.NETWORK }}-${{ env.NODE }}-config_${{ env.GIT_TAG }}-${{ env.ARCH }}/var/lib/heimdall/config/heimdall-config.toml
         env:
           ARCH: all
           NODE: validator
-          NETWORK: amoy
+          NETWORK: puppynet
       - name: Copying config for ${{ env.NODE }} on ${{ env.NETWORK }} on ${{ env.ARCH }}
         run: cp -rp packaging/templates/config/${{ env.NETWORK }}/config.toml packaging/deb/heimdall-${{ env.NETWORK }}-${{ env.NODE }}-config_${{ env.GIT_TAG }}-${{ env.ARCH }}/var/lib/heimdall/config/config.toml
         env:
           ARCH: all
           NODE: validator
-          NETWORK: amoy
+          NETWORK: puppynet
       - name: Copying systemd file for ${{ env.NODE }} on ${{ env.NETWORK }} on ${{ env.ARCH }}
         run: |
           cp -rp packaging/templates/systemd/heimdalld-validator.service packaging/deb/heimdall-${{ env.NETWORK }}-${{ env.NODE }}-config_${{ env.GIT_TAG }}-${{ env.ARCH }}/lib/systemd/system/heimdalld.service
@@ -141,13 +141,13 @@ jobs:
         env:
           ARCH: all
           NODE: validator
-          NETWORK: amoy
+          NETWORK: puppynet
       - name: Building heimdalld for ${{ env.NODE }} on ${{ env.NETWORK }} on ${{ env.ARCH }} profile
         run: dpkg-deb --build --root-owner-group packaging/deb/heimdall-${{ env.NETWORK }}-${{ env.NODE }}-config_${{ env.GIT_TAG }}-${{ env.ARCH }}
         env:
           ARCH: all
           NODE: validator
-          NETWORK: amoy
+          NETWORK: puppynet
 
       # Shasum
       - name: shasum the heimdall debian profile package
@@ -155,14 +155,14 @@ jobs:
         env:
           ARCH: all
           NODE: sentry
-          NETWORK: amoy
+          NETWORK: puppynet
 
       - name: shasum the heimdall debian profile package
         run: cd packaging/deb/ && sha256sum heimdall-${{ env.NETWORK }}-${{ env.NODE }}-config_${{ env.GIT_TAG }}-${{ env.ARCH }}.deb > heimdall-${{ env.NETWORK }}-${{ env.NODE }}-config_${{ env.GIT_TAG }}-${{ env.ARCH }}.deb.checksum
         env:
           ARCH: all
           NODE: validator
-          NETWORK: amoy
+          NETWORK: puppynet
 
       ############ Check and Upload ##########################
       - name: Confirming package built
@@ -174,5 +174,5 @@ jobs:
           tag_name: ${{ env.GIT_TAG }}
           prerelease: true
           files: |
-            packaging/deb/heimdall-amoy-**.deb
-            packaging/deb/heimdall-amoy-**.deb.checksum
+            packaging/deb/heimdall-puppynet-**.deb
+            packaging/deb/heimdall-puppynet-**.deb.checksum
