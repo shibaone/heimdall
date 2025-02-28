@@ -187,7 +187,7 @@ nfpms:
   - rpm
 
   contents:
-  - src: builder/files/heimdalld.service
+  - src: builder/files/shibarium-heimdalld.service
     dst: /lib/systemd/system/heimdalld.service
     type: config
   - src: builder/files/genesis-shibarium.json
