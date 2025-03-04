@@ -3,11 +3,11 @@ LATEST_GIT_TAG:=$(shell git describe --tags $(git rev-list --tags --max-count=1)
 VERSION := $(shell echo $(shell git describe --tags) | sed 's/^v//')
 COMMIT := $(shell git log -1 --format='%H')
 
-ldflags = -X github.com/shibaone/heimdall/version.Name=heimdall \
-		  -X github.com/shibaone/heimdall/version.ServerName=heimdalld \
-		  -X github.com/shibaone/heimdall/version.ClientName=heimdallcli \
-		  -X github.com/shibaone/heimdall/version.Version=$(VERSION) \
-		  -X github.com/shibaone/heimdall/version.Commit=$(COMMIT) \
+ldflags = -X github.com/maticnetwork/heimdall/version.Name=heimdall \
+		  -X github.com/maticnetwork/heimdall/version.ServerName=heimdalld \
+		  -X github.com/maticnetwork/heimdall/version.ClientName=heimdallcli \
+		  -X github.com/maticnetwork/heimdall/version.Version=$(VERSION) \
+		  -X github.com/maticnetwork/heimdall/version.Commit=$(COMMIT) \
 		  -X github.com/cosmos/cosmos-sdk/version.Name=heimdall \
 		  -X github.com/cosmos/cosmos-sdk/version.ServerName=heimdalld \
 		  -X github.com/cosmos/cosmos-sdk/version.ClientName=heimdallcli \
