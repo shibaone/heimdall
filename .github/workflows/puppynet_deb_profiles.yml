@@ -21,14 +21,13 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      # Variables
-      - name: Adding TAG to ENV
-        run: echo "GIT_TAG=`echo $(git describe --tags --abbrev=0)`" >> $GITHUB_ENV
-      - name: adding version
-        run: |
-          NUMERIC_VERSION=$( echo ${{ env.GIT_TAG }} | sed 's/[^0-9.]//g' )
-          echo "VERSION=$NUMERIC_VERSION" >> $GITHUB_ENV
 
+      - name: adding version
+        id: version
+        run: |
+          GIT_TAG=`echo $(git describe --tags --abbrev=0)`
+          NUMERIC_VERSION=$( echo $GIT_TAG | sed 's/[^0-9.]//g' )
+          echo "::set-output name=VERSION::$NUMERIC_VERSION"
 
       - name: Making directory structure for yaml
         run: mkdir -p packaging/deb/heimdalld/var/lib/heimdall/config
@@ -42,7 +41,7 @@ jobs:
         run: |
           touch packaging/deb/heimdalld/DEBIAN/control
           echo "Package: heimdall-profile" >> packaging/deb/heimdalld/DEBIAN/control
-          echo "Version: ${{ env.VERSION }}" >> packaging/deb/heimdalld/DEBIAN/control
+          echo "Version: ${{ steps.version.outputs.VERSION }}" >> packaging/deb/heimdalld/DEBIAN/control
           echo "Section: base" >> packaging/deb/heimdalld/DEBIAN/control
           echo "Priority: optional" >> packaging/deb/heimdalld/DEBIAN/control
           echo "Architecture: all" >> packaging/deb/heimdalld/DEBIAN/control
