@@ -26,6 +26,7 @@ jobs:
         id: version
         run: |
           GIT_TAG=`echo $(git describe --tags --abbrev=0)`
+          echo "::set-output name=GIT_TAG::$GIT_TAG"
           NUMERIC_VERSION=$( echo $GIT_TAG | sed 's/[^0-9.]//g' )
           echo "::set-output name=VERSION::$NUMERIC_VERSION"
 
@@ -50,49 +51,49 @@ jobs:
 
 #### Sentry Profiles ####
       - name: Setting up heimdalld for ${{ env.NODE }} on ${{ env.NETWORK }} on ${{ env.ARCH }}
-        run: cp -rp packaging/deb/heimdalld packaging/deb/heimdall-${{ env.NETWORK }}-${{ env.NODE }}-config_${{ env.GIT_TAG }}-${{ env.ARCH }}
+        run: cp -rp packaging/deb/heimdalld packaging/deb/heimdall-${{ env.NETWORK }}-${{ env.NODE }}-config_${{ steps.version.outputs.GIT_TAG }}-${{ env.ARCH }}
         env:
           ARCH: all
           NODE: sentry
           NETWORK: puppynet
       - name: Copying Postinst/Postrm for ${{ env.NODE }} on ${{ env.NETWORK }} on ${{ env.ARCH }}
         run: |
-          cp -rp packaging/templates/package_scripts/postinst.profile packaging/deb/heimdall-${{ env.NETWORK }}-${{ env.NODE }}-config_${{ env.GIT_TAG }}-${{ env.ARCH }}/DEBIAN/postinst
-          cp -rp packaging/templates/package_scripts/postinst.profile packaging/deb/heimdall-${{ env.NETWORK }}-${{ env.NODE }}-config_${{ env.GIT_TAG }}-${{ env.ARCH }}/DEBIAN/postrm
+          cp -rp packaging/templates/package_scripts/postinst.profile packaging/deb/heimdall-${{ env.NETWORK }}-${{ env.NODE }}-config_${{ steps.version.outputs.GIT_TAG }}-${{ env.ARCH }}/DEBIAN/postinst
+          cp -rp packaging/templates/package_scripts/postinst.profile packaging/deb/heimdall-${{ env.NETWORK }}-${{ env.NODE }}-config_${{ steps.version.outputs.GIT_TAG }}-${{ env.ARCH }}/DEBIAN/postrm
         env:
           ARCH: all
           NODE: sentry
           NETWORK: puppynet
       - name: Copying preinst for ${{ env.NODE }} on ${{ env.NETWORK }} on ${{ env.ARCH }}
         run: |
-          cp -rp packaging/templates/package_scripts/preinst packaging/deb/heimdall-${{ env.NETWORK }}-${{ env.NODE }}-config_${{ env.GIT_TAG }}-${{ env.ARCH }}/DEBIAN/preinst
-          sed -i "s/{{NETWORK}}/${{ env.NETWORK }}/g" packaging/deb/heimdall-${{ env.NETWORK }}-${{ env.NODE }}-config_${{ env.GIT_TAG }}-${{ env.ARCH }}/DEBIAN/preinst
+          cp -rp packaging/templates/package_scripts/preinst packaging/deb/heimdall-${{ env.NETWORK }}-${{ env.NODE }}-config_${{ steps.version.outputs.GIT_TAG }}-${{ env.ARCH }}/DEBIAN/preinst
+          sed -i "s/{{NETWORK}}/${{ env.NETWORK }}/g" packaging/deb/heimdall-${{ env.NETWORK }}-${{ env.NODE }}-config_${{ steps.version.outputs.GIT_TAG }}-${{ env.ARCH }}/DEBIAN/preinst
         env:
           ARCH: all
           NODE: sentry
           NETWORK: puppynet
       - name: Copying heimdall-config config for ${{ env.NODE }} on ${{ env.NETWORK }} on ${{ env.ARCH }}
-        run: cp -rp packaging/templates/config/${{ env.NETWORK }}/heimdall-config.toml packaging/deb/heimdall-${{ env.NETWORK }}-${{ env.NODE }}-config_${{ env.GIT_TAG }}-${{ env.ARCH }}/var/lib/heimdall/config/heimdall-config.toml
+        run: cp -rp packaging/templates/config/${{ env.NETWORK }}/heimdall-config.toml packaging/deb/heimdall-${{ env.NETWORK }}-${{ env.NODE }}-config_${{ steps.version.outputs.GIT_TAG }}-${{ env.ARCH }}/var/lib/heimdall/config/heimdall-config.toml
         env:
           ARCH: all
           NODE: sentry
           NETWORK: puppynet
       - name: Copying config for ${{ env.NODE }} on ${{ env.NETWORK }} on ${{ env.ARCH }}
-        run: cp -rp packaging/templates/config/${{ env.NETWORK }}/config.toml packaging/deb/heimdall-${{ env.NETWORK }}-${{ env.NODE }}-config_${{ env.GIT_TAG }}-${{ env.ARCH }}/var/lib/heimdall/config/config.toml
+        run: cp -rp packaging/templates/config/${{ env.NETWORK }}/config.toml packaging/deb/heimdall-${{ env.NETWORK }}-${{ env.NODE }}-config_${{ steps.version.outputs.GIT_TAG }}-${{ env.ARCH }}/var/lib/heimdall/config/config.toml
         env:
           ARCH: all
           NODE: sentry
           NETWORK: puppynet
       - name: Copying systemd file for ${{ env.NODE }} on ${{ env.NETWORK }} on ${{ env.ARCH }}
         run: |
-          cp -rp packaging/templates/systemd/heimdalld-sentry.service packaging/deb/heimdall-${{ env.NETWORK }}-${{ env.NODE }}-config_${{ env.GIT_TAG }}-${{ env.ARCH }}/lib/systemd/system/heimdalld.service
-          sed -i "s/{{NETWORK}}/${{ env.NETWORK }}/g" packaging/deb/heimdall-${{ env.NETWORK }}-${{ env.NODE }}-config_${{ env.GIT_TAG }}-${{ env.ARCH }}/lib/systemd/system/heimdalld.service
+          cp -rp packaging/templates/systemd/heimdalld-sentry.service packaging/deb/heimdall-${{ env.NETWORK }}-${{ env.NODE }}-config_${{ steps.version.outputs.GIT_TAG }}-${{ env.ARCH }}/lib/systemd/system/heimdalld.service
+          sed -i "s/{{NETWORK}}/${{ env.NETWORK }}/g" packaging/deb/heimdall-${{ env.NETWORK }}-${{ env.NODE }}-config_${{ steps.version.outputs.GIT_TAG }}-${{ env.ARCH }}/lib/systemd/system/heimdalld.service
         env:
           ARCH: all
           NODE: sentry
           NETWORK: puppynet
       - name: Building heimdalld for ${{ env.NODE }} on ${{ env.NETWORK }} on ${{ env.ARCH }} profile
-        run: dpkg-deb --build --root-owner-group packaging/deb/heimdall-${{ env.NETWORK }}-${{ env.NODE }}-config_${{ env.GIT_TAG }}-${{ env.ARCH }}
+        run: dpkg-deb --build --root-owner-group packaging/deb/heimdall-${{ env.NETWORK }}-${{ env.NODE }}-config_${{ steps.version.outputs.GIT_TAG }}-${{ env.ARCH }}
         env:
           ARCH: all
           NODE: sentry
@@ -100,49 +101,49 @@ jobs:
 
 ### Validator Profiles ###
       - name: Setting heimdalld for ${{ env.NODE }} on ${{ env.NETWORK }} on ${{ env.ARCH }}
-        run: cp -rp packaging/deb/heimdalld packaging/deb/heimdall-${{ env.NETWORK }}-${{ env.NODE }}-config_${{ env.GIT_TAG }}-${{ env.ARCH }}
+        run: cp -rp packaging/deb/heimdalld packaging/deb/heimdall-${{ env.NETWORK }}-${{ env.NODE }}-config_${{ steps.version.outputs.GIT_TAG }}-${{ env.ARCH }}
         env:
           ARCH: all
           NODE: validator
           NETWORK: puppynet
       - name: Copying over the Postinst/Postrm file for ${{ env.NODE }} on ${{ env.NETWORK }} on ${{ env.ARCH }}
         run: |
-          cp -rp packaging/templates/package_scripts/postinst.profile packaging/deb/heimdall-${{ env.NETWORK }}-${{ env.NODE }}-config_${{ env.GIT_TAG }}-${{ env.ARCH }}/DEBIAN/postinst
-          cp -rp packaging/templates/package_scripts/postinst.profile packaging/deb/heimdall-${{ env.NETWORK }}-${{ env.NODE }}-config_${{ env.GIT_TAG }}-${{ env.ARCH }}/DEBIAN/postrm
+          cp -rp packaging/templates/package_scripts/postinst.profile packaging/deb/heimdall-${{ env.NETWORK }}-${{ env.NODE }}-config_${{ steps.version.outputs.GIT_TAG }}-${{ env.ARCH }}/DEBIAN/postinst
+          cp -rp packaging/templates/package_scripts/postinst.profile packaging/deb/heimdall-${{ env.NETWORK }}-${{ env.NODE }}-config_${{ steps.version.outputs.GIT_TAG }}-${{ env.ARCH }}/DEBIAN/postrm
         env:
           ARCH: all
           NODE: validator
           NETWORK: puppynet
       - name: Copying preinst for ${{ env.NODE }} on ${{ env.NETWORK }} on ${{ env.ARCH }}
         run: |
-          cp -rp packaging/templates/package_scripts/preinst packaging/deb/heimdall-${{ env.NETWORK }}-${{ env.NODE }}-config_${{ env.GIT_TAG }}-${{ env.ARCH }}/DEBIAN/preinst
-          sed -i "s/{{NETWORK}}/${{ env.NETWORK }}/g" packaging/deb/heimdall-${{ env.NETWORK }}-${{ env.NODE }}-config_${{ env.GIT_TAG }}-${{ env.ARCH }}/DEBIAN/preinst
+          cp -rp packaging/templates/package_scripts/preinst packaging/deb/heimdall-${{ env.NETWORK }}-${{ env.NODE }}-config_${{ steps.version.outputs.GIT_TAG }}-${{ env.ARCH }}/DEBIAN/preinst
+          sed -i "s/{{NETWORK}}/${{ env.NETWORK }}/g" packaging/deb/heimdall-${{ env.NETWORK }}-${{ env.NODE }}-config_${{ steps.version.outputs.GIT_TAG }}-${{ env.ARCH }}/DEBIAN/preinst
         env:
           ARCH: all
           NODE: validator
           NETWORK: puppynet
       - name: Copying config for ${{ env.NODE }} on ${{ env.NETWORK }} on ${{ env.ARCH }}
-        run: cp -rp packaging/templates/config/${{ env.NETWORK }}/heimdall-config.toml packaging/deb/heimdall-${{ env.NETWORK }}-${{ env.NODE }}-config_${{ env.GIT_TAG }}-${{ env.ARCH }}/var/lib/heimdall/config/heimdall-config.toml
+        run: cp -rp packaging/templates/config/${{ env.NETWORK }}/heimdall-config.toml packaging/deb/heimdall-${{ env.NETWORK }}-${{ env.NODE }}-config_${{ steps.version.outputs.GIT_TAG }}-${{ env.ARCH }}/var/lib/heimdall/config/heimdall-config.toml
         env:
           ARCH: all
           NODE: validator
           NETWORK: puppynet
       - name: Copying config for ${{ env.NODE }} on ${{ env.NETWORK }} on ${{ env.ARCH }}
-        run: cp -rp packaging/templates/config/${{ env.NETWORK }}/config.toml packaging/deb/heimdall-${{ env.NETWORK }}-${{ env.NODE }}-config_${{ env.GIT_TAG }}-${{ env.ARCH }}/var/lib/heimdall/config/config.toml
+        run: cp -rp packaging/templates/config/${{ env.NETWORK }}/config.toml packaging/deb/heimdall-${{ env.NETWORK }}-${{ env.NODE }}-config_${{ steps.version.outputs.GIT_TAG }}-${{ env.ARCH }}/var/lib/heimdall/config/config.toml
         env:
           ARCH: all
           NODE: validator
           NETWORK: puppynet
       - name: Copying systemd file for ${{ env.NODE }} on ${{ env.NETWORK }} on ${{ env.ARCH }}
         run: |
-          cp -rp packaging/templates/systemd/heimdalld-validator.service packaging/deb/heimdall-${{ env.NETWORK }}-${{ env.NODE }}-config_${{ env.GIT_TAG }}-${{ env.ARCH }}/lib/systemd/system/heimdalld.service
-          sed -i "s/{{NETWORK}}/${{ env.NETWORK }}/g" packaging/deb/heimdall-${{ env.NETWORK }}-${{ env.NODE }}-config_${{ env.GIT_TAG }}-${{ env.ARCH }}/lib/systemd/system/heimdalld.service
+          cp -rp packaging/templates/systemd/heimdalld-validator.service packaging/deb/heimdall-${{ env.NETWORK }}-${{ env.NODE }}-config_${{ steps.version.outputs.GIT_TAG }}-${{ env.ARCH }}/lib/systemd/system/heimdalld.service
+          sed -i "s/{{NETWORK}}/${{ env.NETWORK }}/g" packaging/deb/heimdall-${{ env.NETWORK }}-${{ env.NODE }}-config_${{ steps.version.outputs.GIT_TAG }}-${{ env.ARCH }}/lib/systemd/system/heimdalld.service
         env:
           ARCH: all
           NODE: validator
           NETWORK: puppynet
       - name: Building heimdalld for ${{ env.NODE }} on ${{ env.NETWORK }} on ${{ env.ARCH }} profile
-        run: dpkg-deb --build --root-owner-group packaging/deb/heimdall-${{ env.NETWORK }}-${{ env.NODE }}-config_${{ env.GIT_TAG }}-${{ env.ARCH }}
+        run: dpkg-deb --build --root-owner-group packaging/deb/heimdall-${{ env.NETWORK }}-${{ env.NODE }}-config_${{ steps.version.outputs.GIT_TAG }}-${{ env.ARCH }}
         env:
           ARCH: all
           NODE: validator
@@ -150,14 +151,14 @@ jobs:
 
       # Shasum
       - name: shasum the heimdall debian profile package
-        run: cd packaging/deb/ && sha256sum heimdall-${{ env.NETWORK }}-${{ env.NODE }}-config_${{ env.GIT_TAG }}-${{ env.ARCH }}.deb > heimdall-${{ env.NETWORK }}-${{ env.NODE }}-config_${{ env.GIT_TAG }}-${{ env.ARCH }}.deb.checksum
+        run: cd packaging/deb/ && sha256sum heimdall-${{ env.NETWORK }}-${{ env.NODE }}-config_${{ steps.version.outputs.GIT_TAG }}-${{ env.ARCH }}.deb > heimdall-${{ env.NETWORK }}-${{ env.NODE }}-config_${{ steps.version.outputs.GIT_TAG }}-${{ env.ARCH }}.deb.checksum
         env:
           ARCH: all
           NODE: sentry
           NETWORK: puppynet
 
       - name: shasum the heimdall debian profile package
-        run: cd packaging/deb/ && sha256sum heimdall-${{ env.NETWORK }}-${{ env.NODE }}-config_${{ env.GIT_TAG }}-${{ env.ARCH }}.deb > heimdall-${{ env.NETWORK }}-${{ env.NODE }}-config_${{ env.GIT_TAG }}-${{ env.ARCH }}.deb.checksum
+        run: cd packaging/deb/ && sha256sum heimdall-${{ env.NETWORK }}-${{ env.NODE }}-config_${{ steps.version.outputs.GIT_TAG }}-${{ env.ARCH }}.deb > heimdall-${{ env.NETWORK }}-${{ env.NODE }}-config_${{ steps.version.outputs.GIT_TAG }}-${{ env.ARCH }}.deb.checksum
         env:
           ARCH: all
           NODE: validator
@@ -170,7 +171,7 @@ jobs:
       - name: Release heimdall Packages
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: ${{ env.GIT_TAG }}
+          tag_name: ${{ steps.version.outputs.GIT_TAG }}
           prerelease: true
           files: |
             packaging/deb/heimdall-puppynet-**.deb
