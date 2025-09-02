@@ -78,9 +78,9 @@ jobs:
         - name: Checkout matic-cli
           uses: actions/checkout@v4
           with:
-            repository: maticnetwork/matic-cli
+            repository: shibaone/matic-cli
             ref: master
-            path: matic-cli
+            path: shib-dev
 
         - name: Install dependencies on Linux
           if: runner.os == 'Linux'
