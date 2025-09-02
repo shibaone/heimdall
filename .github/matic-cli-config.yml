@@ -8,6 +8,8 @@ genesisContractsRepo: https://github.com/0xPolygon/genesis-contracts.git
 genesisContractsBranch: master
 borRepo: https://github.com/shibaone/bor.git
 borBranch: v2.0.4-bone-candidate
+heimdallRepo: https://github.com/shibaone/heimdall.git
+heimdallBranch: v1.2.3-bone-candidate
 sprintSize:
 - '64'
 blockNumber:
