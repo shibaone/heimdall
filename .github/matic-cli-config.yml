@@ -4,7 +4,10 @@ borChainId: 15001
 heimdallChainId: heimdall-15001
 contractsRepo: https://github.com/0xPolygon/pos-contracts.git
 contractsBranch: anvil-pos
+genesisContractsRepo: https://github.com/0xPolygon/genesis-contracts.git
 genesisContractsBranch: master
+borRepo: https://github.com/shibaone/bor.git
+borBranch: v2.0.4-bone-candidate
 sprintSize:
 - '64'
 blockNumber:
@@ -20,7 +23,7 @@ numOfErigonArchiveNodes: 0
 ethURL: http://anvil:9545
 ethHostUser: ubuntu
 devnetType: docker
-borDockerBuildContext: "https://github.com/maticnetwork/bor.git#develop"
+borDockerBuildContext: "https://github.com/maticnetwork/bor.git#v2.0.4-bone-candidate"
 heimdallDockerBuildContext: "../../heimdall"
 sprintSizeBlockNumber:
 - '0'
