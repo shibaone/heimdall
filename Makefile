@@ -33,6 +33,7 @@ build: clean
 
 # make install
 install:
+	go mod tidy
 	go install $(BUILD_FLAGS) ./cmd/heimdalld
 	go install $(BUILD_FLAGS) ./cmd/heimdallcli
 
