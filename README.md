@@ -69,3 +69,6 @@ docker run heimdall
 ### Documentation
 
 Latest docs are [here](https://docs.polygon.technology/pos/).
+
+
+<!-- Security scan triggered at 2026-09-02 15:41:59 -->
